@@ -1,0 +1,28 @@
+# Copy to local.nix and fill in real values — this file is gitignored
+{
+  haven = {
+    username = "youruser";
+    hostConfig = {
+      git = {
+        name = "Your Name";
+        email = "you@personal.com";
+        signingKey = "~/.ssh/id_ed25519_haven";
+      };
+      ssh.identityFile = "~/.ssh/id_ed25519_haven";
+      workDirs = [ "code/personal" ];
+    };
+  };
+
+  # framework = {
+  #   username = "youruser";
+  #   hostConfig = {
+  #     git = {
+  #       name = "Your Name";
+  #       email = "you@work.com";
+  #       signingKey = "~/.ssh/id_ed25519_framework";
+  #     };
+  #     ssh.identityFile = "~/.ssh/id_ed25519_framework";
+  #     workDirs = [ "code/work" "code/personal" ];
+  #   };
+  # };
+}
