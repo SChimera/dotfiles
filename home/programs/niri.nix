@@ -1,8 +1,11 @@
 { ... }:
 {
+  # `programs.niri.enable` is declared only by niri-flake.homeModules.niri, which
+  # we deliberately do not import (it conflicts with the NixOS module's auto-inject
+  # of homeModules.config). Enablement happens at the NixOS level via
+  # `programs.niri.enable = true` in nixos/hosts/haven.nix. This file only sets the
+  # config option, which comes from homeModules.config -> settings.module.
   programs.niri = {
-    enable = true;
-
     # Raw KDL config string — gives full control and matches niri wiki examples exactly
     # Swap to `settings = { ... }` if you prefer type-checked Nix attrs (niri-flake docs)
     config = ''

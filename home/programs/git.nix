@@ -5,9 +5,9 @@ in
 {
   programs.git = {
     enable = true;
-    userName = hostConfig.git.name or "Your Name";
-    userEmail = hostConfig.git.email or "you@example.com";
-    extraConfig = {
+    settings = {
+      user.name = hostConfig.git.name or "Your Name";
+      user.email = hostConfig.git.email or "you@example.com";
       init.defaultBranch = "main";
       pull.rebase = true;
       core.editor = "nvim";

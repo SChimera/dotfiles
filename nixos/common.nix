@@ -22,6 +22,9 @@
   programs.fish.enable = true;
 
   programs.ssh.startAgent = true;
+  # niri-flake / gnome-keyring auto-enable gcr-ssh-agent, which conflicts with
+  # openssh's agent. We want the explicit openssh agent above, so disable gcr's.
+  services.gnome.gcr-ssh-agent.enable = false;
 
   # PipeWire audio
   services.pipewire = {
@@ -56,7 +59,7 @@
     nerd-fonts.jetbrains-mono
     nerd-fonts.noto
     noto-fonts
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     material-design-icons
   ];
 

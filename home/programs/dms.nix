@@ -21,6 +21,6 @@
     enableClipboardPaste = true;    # clipboard paste (wtype)
 
     # dgop not in nixpkgs 25.11 stable — pull from its own flake
-    dgop.package = inputs.dgop.packages.${pkgs.system}.default;
+    dgop.package = inputs.dgop.packages.${pkgs.stdenv.hostPlatform.system}.default;
   };
 }

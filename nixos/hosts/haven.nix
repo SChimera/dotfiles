@@ -8,6 +8,13 @@
 
   networking.hostName = "haven";
 
+  # Enable niri session — also adds it to displayManager.sessionPackages.
+  # niri-flake.nixosModules.niri auto-injects homeModules.config into HM
+  # sharedModules, so user-level config in home/programs/niri.nix still works.
+  programs.niri.enable = true;
+  # DMS provides its own polkit agent; disable niri-flake's to avoid conflict.
+  systemd.user.services.niri-flake-polkit.enable = false;
+
   # Bootloader — assumes UEFI. For legacy BIOS swap to grub.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

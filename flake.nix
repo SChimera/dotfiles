@@ -47,7 +47,9 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = { inherit inputs username hostConfig; };
-              home-manager.sharedModules = [ niri-flake.homeModules.niri ];
+              # niri-flake.nixosModules.niri auto-injects homeModules.config into
+              # sharedModules. Do not add homeModules.niri here — it re-imports
+              # homeModules.config and duplicates the programs.niri.package option.
               home-manager.users.${username} = import ./home/hosts/${hostname}.nix;
             }
           ];
