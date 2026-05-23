@@ -3,23 +3,32 @@
   nix = {
     settings = {
       experimental-features = [ "nix-command" "flakes" ];
-      auto-optimise-store = true;
+      trusted-users = [ "root" "@wheel" ];
     };
     gc = {
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 30d";
     };
+    optimise = {
+      automatic = true;
+      dates = [ "weekly" ];
+    };
   };
 
   nixpkgs.config.allowUnfree = true;
 
-  time.timeZone = "Europe/London"; # TODO: your timezone
   i18n.defaultLocale = "en_GB.UTF-8";
+  console.keyMap = "us";
+
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1"; # native Wayland for Electron/Chromium apps
+  };
 
   networking.networkmanager.enable = true;
 
   programs.fish.enable = true;
+  programs.dconf.enable = true;
 
   programs.ssh.startAgent = true;
   # niri-flake / gnome-keyring auto-enable gcr-ssh-agent, which conflicts with
@@ -67,6 +76,9 @@
     wget
     git
     curl
+    neovim
+    unzip
+    p7zip
     btop
     brightnessctl
     playerctl

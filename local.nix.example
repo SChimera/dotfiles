@@ -3,6 +3,7 @@
   haven = {
     username = "youruser";
     hostConfig = {
+      timezone = "Europe/Copenhagen"; # optional — defaults to Europe/Copenhagen
       git = {
         name = "Your Name";
         email = "you@personal.com";
@@ -16,6 +17,7 @@
   # framework = {
   #   username = "youruser";
   #   hostConfig = {
+  #     timezone = "Europe/London";
   #     git = {
   #       name = "Your Name";
   #       email = "you@work.com";

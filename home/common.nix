@@ -15,12 +15,24 @@
   home.packages = with pkgs; [
     firefox
     fuzzel
-    swaylock
-    swayidle
     wlogout
     pavucontrol
     nautilus
     imv
+    mpv
+
+    # CLI staples
+    ripgrep
+    fd
+    jq
+    gh
+
+    # Wayland / niri quality-of-life
+    cliphist
+    xwayland-satellite-unstable # paired with niri-unstable for X11 app support
+    satty
+    wf-recorder
+    wev
   ];
 
   programs.home-manager.enable = true;

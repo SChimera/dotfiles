@@ -1,4 +1,4 @@
-{ pkgs, username, ... }:
+{ pkgs, inputs, username, hostConfig, ... }:
 {
   imports = [
     # Copy here after running `nixos-generate-config` on the machine
@@ -8,10 +8,18 @@
 
   networking.hostName = "haven";
 
+  time.timeZone = hostConfig.timezone or "Europe/Copenhagen";
+
+  # niri-flake overlay — exposes pkgs.niri-{stable,unstable} and
+  # pkgs.xwayland-satellite-{stable,unstable} built against this nixpkgs.
+  nixpkgs.overlays = [ inputs.niri-flake.overlays.niri ];
+
   # Enable niri session — also adds it to displayManager.sessionPackages.
   # niri-flake.nixosModules.niri auto-injects homeModules.config into HM
   # sharedModules, so user-level config in home/programs/niri.nix still works.
   programs.niri.enable = true;
+  # niri-unstable is required for the xwayland-satellite KDL block in home/programs/niri.nix.
+  programs.niri.package = pkgs.niri-unstable;
   # DMS provides its own polkit agent; disable niri-flake's to avoid conflict.
   systemd.user.services.niri-flake-polkit.enable = false;
 

@@ -18,11 +18,11 @@ in
         compression = false;
         serverAliveInterval = 0;
         serverAliveCountMax = 3;
-        hashKnownHosts = false;
+        hashKnownHosts = true;
         userKnownHostsFile = "~/.ssh/known_hosts";
-        controlMaster = "no";
+        controlMaster = "auto";
         controlPath = "~/.ssh/master-%r@%n:%p";
-        controlPersist = "no";
+        controlPersist = "10m";
       };
     } // lib.optionalAttrs (identityFile != null) {
       "github.com".identityFile = identityFile;

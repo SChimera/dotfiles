@@ -13,7 +13,7 @@
       input {
         keyboard {
           xkb {
-            layout "gb"
+            layout "us"
             // options "caps:escape"
           }
         }
@@ -53,8 +53,17 @@
       }
 
       // Startup
-      // DankMaterialShell is started by its niri module (enableSpawn = true in dms.nix)
-      spawn-at-startup "swayidle" "-w" "timeout" "300" "swaylock -f" "before-sleep" "swaylock -f"
+      // DMS (started by its systemd unit, see dms.nix) provides the lockscreen
+      // and idle timer — auto-lock/suspend are configured in DMS Settings.
+      // cliphist captures clipboard history; DMS's clipboard UI reads from it.
+      spawn-at-startup "sh" "-c" "wl-paste --type text  --watch cliphist store"
+      spawn-at-startup "sh" "-c" "wl-paste --type image --watch cliphist store"
+
+      // X11 app support — niri auto-spawns xwayland-satellite when this block
+      // is present. Requires niri-unstable (configured in nixos/hosts/haven.nix).
+      // niri finds the binary on PATH via home.packages (xwayland-satellite-unstable).
+      xwayland-satellite {
+      }
 
       prefer-no-csd
 
@@ -64,6 +73,8 @@
       binds {
         Mod+Return { spawn "foot"; }
         Mod+D { spawn "fuzzel"; }
+        Mod+V { spawn "dms" "ipc" "call" "clipboard" "toggle"; }
+        Mod+Alt+L { spawn "dms" "ipc" "call" "lock" "lock"; }
         Mod+Shift+Q { close-window; }
         Mod+Shift+E { quit; }
 
