@@ -2,15 +2,14 @@
 {
   imports = [
     inputs.dms.homeModules.dank-material-shell
-    inputs.dms.homeModules.niri
   ];
 
   programs.dank-material-shell = {
     enable = true;
 
-    niri = {
-      enableSpawn = true;    # auto-starts DMS with niri — do NOT combine with systemd.enable
-      enableKeybinds = true; # preset keybinds for launcher, notifications, settings
+    systemd = {
+      enable = true;
+      restartIfChanged = true;
     };
 
     # Core features
