@@ -6,8 +6,9 @@
       ls = "eza";
       ll = "eza -la";
       ".." = "cd ..";
-      nixswitch = "sudo nixos-rebuild switch --flake ~/.dotfiles#(hostname)";
-      homeswitch = "home-manager switch --flake ~/.dotfiles";
+      nixswitch = "sudo nixos-rebuild switch --flake ~/code/personal/dotfiles#(hostname)";
+      homeswitch = "home-manager switch --flake ~/code/personal/dotfiles";
+      cc = "claude --dangerously-skip-permissions";
     };
   };
 
