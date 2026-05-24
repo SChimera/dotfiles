@@ -93,6 +93,9 @@
   };
   services.blueman.enable = true;
 
+  services.udisks2.enable = true;
+  services.gvfs.enable = true;
+
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     nerd-fonts.noto
