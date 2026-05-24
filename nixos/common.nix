@@ -77,6 +77,7 @@
     git
     curl
     claude-code
+    vscode
     neovim
     spotify
     unzip
