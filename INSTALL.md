@@ -157,32 +157,10 @@ Pull the Ventoy USB while the machine restarts.
 
 ---
 
-## 10. First login + bring in SSH key
+## 10. Commit the hardware-configuration
 
-1. Log in via DankGreeter → pick **niri** session.
-2. Open a terminal (foot).
-3. Plug in the USB with your SSH key.
-
-```bash
-ls /run/media/$USER/    # find your USB mount
-
-mkdir -p ~/.ssh
-chmod 700 ~/.ssh
-
-cp /run/media/$USER/<USB-LABEL>/id_ed25519     ~/.ssh/id_ed25519_haven
-cp /run/media/$USER/<USB-LABEL>/id_ed25519.pub ~/.ssh/id_ed25519_haven.pub
-chmod 600 ~/.ssh/id_ed25519_haven
-chmod 644 ~/.ssh/id_ed25519_haven.pub
-
-ssh-add ~/.ssh/id_ed25519_haven
-ssh -T git@github.com
-```
-
-Expect: `Hi SChimera! You've successfully authenticated...`
-
----
-
-## 11. Commit the hardware-configuration
+After first login, push the generated hardware file so future
+reinstalls of the same machine can skip step 6.
 
 ```bash
 cd ~/dotfiles    # or wherever your clone is on the new system
@@ -190,19 +168,6 @@ git add nixos/hosts/hardware-configuration.nix
 git commit -m "Add haven hardware-configuration.nix"
 git push
 ```
-
-Reinstalls of the same hardware can now skip step 6.
-
----
-
-## 12. Wipe the SSH key from the USB
-
-```bash
-shred -u /run/media/$USER/<USB-LABEL>/id_ed25519
-rm        /run/media/$USER/<USB-LABEL>/id_ed25519.pub
-```
-
-Don't leave private keys lying around on portable storage.
 
 ---
 
