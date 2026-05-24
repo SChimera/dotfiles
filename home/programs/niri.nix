@@ -5,10 +5,24 @@
   # of homeModules.config). Enablement happens at the NixOS level via
   # `programs.niri.enable = true` in nixos/hosts/haven.nix. This file only sets the
   # config option, which comes from homeModules.config -> settings.module.
+  # Stub the structured `settings` to a non-null value so DMS's include shim
+  # (which probes `settings.layout.border.enable` to decide whether to emit
+  # the border-include fix) can evaluate. niri-flake docs: setting
+  # `programs.niri.config` overrides everything under `settings`, so the raw
+  # KDL below still wins on disk.
+  programs.niri.settings = { };
+
   programs.niri = {
     # Raw KDL config string — gives full control and matches niri wiki examples exactly
     # Swap to `settings = { ... }` if you prefer type-checked Nix attrs (niri-flake docs)
     config = ''
+      // Cursor — niri reads theme/size from this block (not XCURSOR_* env).
+      // Adwaita is installed via home.packages in home/common.nix.
+      cursor {
+        xcursor-theme "Adwaita"
+        xcursor-size 18
+      }
+
       // Input
       input {
         keyboard {

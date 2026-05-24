@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "danksearch": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1779380866,
+        "narHash": "sha256-GBQeoW8E0Vdabz4POwXiOg8dtV9/8YDbsp82Bic2QPc=",
+        "owner": "AvengeMedia",
+        "repo": "danksearch",
+        "rev": "db1c8f8c692d0d838393e25f4a2a41404309ff75",
+        "type": "github"
+      },
+      "original": {
+        "owner": "AvengeMedia",
+        "repo": "danksearch",
+        "type": "github"
+      }
+    },
     "dgop": {
       "inputs": {
         "nixpkgs": [
@@ -213,6 +233,7 @@
     },
     "root": {
       "inputs": {
+        "danksearch": "danksearch",
         "dgop": "dgop",
         "disko": "disko",
         "dms": "dms",

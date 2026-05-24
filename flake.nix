@@ -25,13 +25,18 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    danksearch = {
+      url = "github:AvengeMedia/danksearch";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, niri-flake, dms, dgop, disko, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, niri-flake, dms, dgop, danksearch, disko, ... }@inputs:
     let
       local = if builtins.pathExists ./local.nix then import ./local.nix else {};
 

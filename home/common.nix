@@ -4,6 +4,7 @@
     ./programs/niri.nix
     ./programs/foot.nix
     ./programs/dms.nix
+    ./programs/dsearch.nix
     ./programs/git.nix
     ./programs/shell.nix
     ./programs/ssh.nix
@@ -29,6 +30,7 @@
     yq-go
     gh
     delta
+    fastfetch
 
     # k8s
     kubectl
@@ -41,7 +43,15 @@
     satty
     wf-recorder
     wev
+
+    # Cursor theme. Niri picks theme+size from its own `cursor` block
+    # (see niri.nix), not from XCURSOR_THEME. The env var below is for
+    # non-niri apps (and for niri's children, which niri then overwrites
+    # to match its own block anyway).
+    adwaita-icon-theme
   ];
+
+  home.sessionVariables.XCURSOR_THEME = "Adwaita";
 
   programs.home-manager.enable = true;
 
