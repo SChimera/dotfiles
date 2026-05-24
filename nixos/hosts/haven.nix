@@ -2,7 +2,7 @@
 {
   imports = [
     # Copy here after running `nixos-generate-config` on the machine
-    # ./hardware-configuration.nix
+    ./hardware-configuration.nix
     ../gaming.nix
   ];
 
