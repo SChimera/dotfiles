@@ -11,8 +11,10 @@ in
       s = "status";
     };
     settings = {
-      user.name = hostConfig.git.name or "Your Name";
-      user.email = email;
+      user = {
+        name = hostConfig.git.name or "Your Name";
+        email = email;
+      } // lib.optionalAttrs (signingKey != null) { signingKey = signingKey; };
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
@@ -24,7 +26,7 @@ in
       gpg.format = "ssh";
       commit.gpgsign = signingKey != null;
       "gpg \"ssh\"".allowedSignersFile = "~/.config/git/allowed_signers";
-    } // (if signingKey != null then { user.signingKey = signingKey; } else {});
+    };
   };
 
   # Derive allowed_signers from the configured private key so commit
