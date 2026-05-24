@@ -18,7 +18,7 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  i18n.defaultLocale = "en_GB.UTF-8";
+  i18n.defaultLocale = "en_DK.UTF-8";
   console.keyMap = "us";
 
   environment.sessionVariables = {
@@ -76,7 +76,9 @@
     wget
     git
     curl
+    claude-code
     neovim
+    spotify
     unzip
     p7zip
     btop

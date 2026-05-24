@@ -14,6 +14,7 @@
 
   home.packages = with pkgs; [
     firefox
+    vesktop
     fuzzel
     wlogout
     pavucontrol
@@ -25,7 +26,13 @@
     ripgrep
     fd
     jq
+    yq
     gh
+
+    # k8s
+    kubectl
+    awscli2
+    kubernetes-helm
 
     # Wayland / niri quality-of-life
     cliphist
