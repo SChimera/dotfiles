@@ -11,8 +11,7 @@ cd dotfiles
 less INSTALL.md
 ```
 
-You should already be sitting at `[nixos@nixos:~]$` on the live ISO,
-with Windows backed up and your SSH key on a USB stick.
+Starting point: you're sitting at `[nixos@nixos:~]$` on the live ISO.
 
 ---
 
@@ -73,9 +72,10 @@ Save: **Ctrl+O, Enter, Ctrl+X**
 
 ---
 
-## 5. Run disko (DESTRUCTIVE — point of no return)
+## 5. Run disko
 
-> Wipes all three NVMe drives. Last chance to abort.
+Wipes the three NVMe drives, partitions them, and mounts the new
+filesystems under `/mnt`.
 
 ```bash
 sudo nix --experimental-features 'nix-command flakes' \
