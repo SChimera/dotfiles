@@ -67,7 +67,7 @@
       nixosConfigurations = {
         haven = mkHost {
           hostname = "haven";
-          username = (local.haven or {}).username or "youruser";
+          username = (local.haven or {}).username or "seb";
           hostConfig = (local.haven or {}).hostConfig or {};
         };
       };

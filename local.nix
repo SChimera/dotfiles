@@ -1,12 +1,12 @@
-# Copy to local.nix and fill in real values — this file is gitignored
+# Per-host config: username, timezone, git identity, ssh key paths.
 {
   haven = {
-    username = "youruser";
+    username = "seb";
     hostConfig = {
       timezone = "Europe/Copenhagen"; # optional — defaults to Europe/Copenhagen
       git = {
-        name = "Your Name";
-        email = "you@personal.com";
+        name = "Sebastian Chimera";
+        email = "schimera@schimera.dev";
         signingKey = "~/.ssh/id_ed25519_haven";
       };
       ssh.identityFile = "~/.ssh/id_ed25519_haven";

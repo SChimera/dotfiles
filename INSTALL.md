@@ -53,20 +53,12 @@ cd dotfiles
 
 ---
 
-## 4. Create `local.nix`
+## 4. Review `local.nix`
 
-```bash
-cp local.nix.example local.nix
-nano local.nix
-```
-
-Fill in:
-
-- `username = "..."` — your Linux username
-- `hostConfig.git.name` / `email` — for commit attribution
-- `hostConfig.git.signingKey` and `hostConfig.ssh.identityFile` —
-  leave as `~/.ssh/id_ed25519_haven`; key gets copied there after
-  first boot
+`local.nix` is committed with the values for each host. Open it
+to confirm the entry for the machine you're installing on
+(username, timezone, git identity, ssh key paths) is correct.
+Edit if anything has drifted.
 
 Save: **Ctrl+O, Enter, Ctrl+X**
 
