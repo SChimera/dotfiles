@@ -28,6 +28,7 @@
     jq
     yq-go
     gh
+    delta
 
     # k8s
     kubectl

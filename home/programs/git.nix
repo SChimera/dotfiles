@@ -6,12 +6,21 @@ in
 {
   programs.git = {
     enable = true;
+    aliases = {
+      oops = "commit --amend --no-edit";
+      s = "status";
+    };
     settings = {
       user.name = hostConfig.git.name or "Your Name";
       user.email = email;
       init.defaultBranch = "main";
       pull.rebase = true;
-      core.editor = "nvim";
+      push.autoSetupRemote = true;
+      rebase.autosquash = true;
+      rebase.autoStash = true;
+      help.autocorrect = 1;
+      core.editor = "code --wait";
+      core.pager = "delta";
       gpg.format = "ssh";
       commit.gpgsign = signingKey != null;
       "gpg \"ssh\"".allowedSignersFile = "~/.config/git/allowed_signers";
