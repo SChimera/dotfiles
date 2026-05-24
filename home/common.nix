@@ -26,7 +26,7 @@
     ripgrep
     fd
     jq
-    yq
+    yq-go
     gh
 
     # k8s
