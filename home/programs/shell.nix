@@ -3,7 +3,8 @@
   programs.fish = {
     enable = true;
     shellAliases = {
-      ll = "ls -la";
+      ls = "eza";
+      ll = "eza -la";
       ".." = "cd ..";
       nixswitch = "sudo nixos-rebuild switch --flake ~/.dotfiles#(hostname)";
       homeswitch = "home-manager switch --flake ~/.dotfiles";
@@ -12,7 +13,10 @@
 
   programs.starship.enable = true;
 
-  programs.zoxide.enable = true;
+  programs.zoxide = {
+    enable = true;
+    options = [ "--cmd" "cd" ];
+  };
 
   programs.fzf.enable = true;
 
