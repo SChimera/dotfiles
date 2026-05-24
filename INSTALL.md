@@ -11,37 +11,12 @@ cd dotfiles
 less INSTALL.md
 ```
 
----
-
-## 0. Before you boot — back up Windows
-
-The install wipes **all three NVMe drives**. Save anything you need first:
-
-- Browser bookmarks / passwords (export or sync to account)
-- `%USERPROFILE%\.ssh\` SSH keys
-- `Documents`, `Desktop`, `Downloads`
-- Non-Steam game saves (`%USERPROFILE%\AppData\Local\<game>`,
-  `Documents\My Games\`)
-- Authenticator app exports
-- License keys for standalone software
-- Git repos with uncommitted work
-
-Copy your SSH private + public key onto the Ventoy USB for later
-(see step 11).
+You should already be sitting at `[nixos@nixos:~]$` on the live ISO,
+with Windows backed up and your SSH key on a USB stick.
 
 ---
 
-## 1. Boot the installer
-
-1. Plug in Ventoy USB.
-2. Power on, mash F12 (or the motherboard boot-menu key).
-3. Pick USB → NixOS minimal ISO.
-
-You land at `[nixos@nixos:~]$`.
-
----
-
-## 2. Network
+## 1. Network
 
 **Ethernet** — usually auto-connects, skip.
 
@@ -60,7 +35,7 @@ ping -c 2 nixos.org
 
 ---
 
-## 3. Get git
+## 2. Get git
 
 ```bash
 nix-shell -p git
@@ -70,7 +45,7 @@ Prompt changes — git is now on PATH for this shell.
 
 ---
 
-## 4. Clone the dotfiles
+## 3. Clone the dotfiles
 
 ```bash
 git clone https://github.com/SChimera/dotfiles.git
@@ -79,7 +54,7 @@ cd dotfiles
 
 ---
 
-## 5. Create `local.nix`
+## 4. Create `local.nix`
 
 ```bash
 cp local.nix.example local.nix
@@ -98,9 +73,9 @@ Save: **Ctrl+O, Enter, Ctrl+X**
 
 ---
 
-## 6. Run disko (DESTRUCTIVE — point of no return)
+## 5. Run disko (DESTRUCTIVE — point of no return)
 
-> Wipes all three NVMe drives. Confirm Windows backup before continuing.
+> Wipes all three NVMe drives. Last chance to abort.
 
 ```bash
 sudo nix --experimental-features 'nix-command flakes' \
@@ -120,7 +95,7 @@ Should list `/mnt`, `/mnt/boot`, `/mnt/nix`, `/mnt/home`, `/mnt/games`,
 
 ---
 
-## 7. Generate hardware modules
+## 6. Generate hardware modules
 
 ```bash
 sudo nixos-generate-config --root /mnt --no-filesystems
@@ -131,7 +106,7 @@ sudo cp /mnt/etc/nixos/hardware-configuration.nix nixos/hosts/
 
 ---
 
-## 8. Wire the hardware file into the flake
+## 7. Wire the hardware file into the flake
 
 ```bash
 nano nixos/hosts/haven.nix
@@ -153,7 +128,7 @@ Save and exit.
 
 ---
 
-## 9. Install
+## 8. Install
 
 ```bash
 sudo nixos-install --flake .#haven --no-root-password
@@ -164,13 +139,13 @@ full system. Walk away.
 
 ---
 
-## 10. Set your user password (before reboot)
+## 9. Set your user password (before reboot)
 
 ```bash
 sudo nixos-enter --root /mnt -c 'passwd YOUR_USERNAME'
 ```
 
-Replace `YOUR_USERNAME` with whatever you put in step 5.
+Replace `YOUR_USERNAME` with whatever you put in step 4.
 
 Then:
 
@@ -182,7 +157,7 @@ Pull the Ventoy USB while the machine restarts.
 
 ---
 
-## 11. First login + bring in SSH key
+## 10. First login + bring in SSH key
 
 1. Log in via DankGreeter → pick **niri** session.
 2. Open a terminal (foot).
@@ -207,7 +182,7 @@ Expect: `Hi SChimera! You've successfully authenticated...`
 
 ---
 
-## 12. Commit the hardware-configuration
+## 11. Commit the hardware-configuration
 
 ```bash
 cd ~/dotfiles    # or wherever your clone is on the new system
@@ -216,11 +191,11 @@ git commit -m "Add haven hardware-configuration.nix"
 git push
 ```
 
-Reinstalls of the same hardware can now skip step 7.
+Reinstalls of the same hardware can now skip step 6.
 
 ---
 
-## 13. Wipe the SSH key from the USB
+## 12. Wipe the SSH key from the USB
 
 ```bash
 shred -u /run/media/$USER/<USB-LABEL>/id_ed25519
@@ -249,7 +224,7 @@ btrfs filesystem df /
   is idempotent.
 - **nixos-install fails on a derivation:** read the error, fix the
   relevant `.nix` file, re-run install (it resumes from cache).
-- **No internet on the live ISO:** check `ip a` and redo step 2.
+- **No internet on the live ISO:** check `ip a` and redo step 1.
 - **Forgot user password:** boot the live ISO again, then:
   ```bash
   sudo mount /dev/disk/by-id/nvme-CT2000T705SSD3_2505E9A44AFF-part2 /mnt
@@ -257,7 +232,7 @@ btrfs filesystem df /
   passwd YOUR_USERNAME
   ```
 - **Need to start over completely:** boot the ISO and re-run from
-  step 4 — the repo is already on GitHub.
+  step 3 — the repo is already on GitHub.
 
 ---
 
