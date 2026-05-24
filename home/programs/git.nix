@@ -6,11 +6,11 @@ in
 {
   programs.git = {
     enable = true;
-    aliases = {
-      oops = "commit --amend --no-edit";
-      s = "status";
-    };
     settings = {
+      alias = {
+        oops = "commit --amend --no-edit";
+        s = "status";
+      };
       user = {
         name = hostConfig.git.name or "Your Name";
         email = email;
