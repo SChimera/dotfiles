@@ -18,6 +18,35 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  # In-RAM compressed swap. No disk swap configured — at 64 GB RAM the
+  # T705's endurance is better spent on the Nix store than on paging.
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 50;
+  };
+
+  # Tuning that pairs with zram (push to compressed swap before evicting cache).
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 180;
+    "vm.watermark_boost_factor" = 0;
+    "vm.watermark_scale_factor" = 125;
+    "vm.page-cluster" = 0;
+  };
+
+  # /tmp in RAM — fast builds, automatic cleanup, no SSD wear.
+  boot.tmp.useTmpfs = true;
+
+  # Nix build parallelism — let it use the full 8c/16t.
+  nix.settings.max-jobs = "auto";
+  nix.settings.cores = 0;
+
+  # Periodic btrfs scrub catches silent corruption on all mounted btrfs FS.
+  services.btrfs.autoScrub = {
+    enable = true;
+    interval = "monthly";
+  };
+
   i18n.defaultLocale = "en_DK.UTF-8";
   console.keyMap = "us";
 

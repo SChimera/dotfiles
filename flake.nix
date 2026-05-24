@@ -24,9 +24,14 @@
       url = "github:AvengeMedia/dgop";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, niri-flake, dms, dgop, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, niri-flake, dms, dgop, disko, ... }@inputs:
     let
       local = if builtins.pathExists ./local.nix then import ./local.nix else {};
 
@@ -40,6 +45,8 @@
           modules = [
             ./nixos/common.nix
             ./nixos/hosts/${hostname}.nix
+            ./nixos/hosts/${hostname}-disko.nix
+            disko.nixosModules.disko
             niri-flake.nixosModules.niri
             dms.nixosModules.greeter
             home-manager.nixosModules.home-manager
