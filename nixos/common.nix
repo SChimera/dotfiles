@@ -109,6 +109,7 @@
     git
     curl
     claude-code
+    protonvpn-gui
     vscode
     neovim
     spotify
