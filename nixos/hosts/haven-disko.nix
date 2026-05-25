@@ -19,6 +19,8 @@ let
   btrfsGamesOpts   = [ "compress=zstd:1" "noatime" "discard=async" ];
   # nodatacow: VM disk images do small random writes that fragment CoW badly.
   btrfsNoCowOpts   = [ "noatime" "discard=async" "nodatacow" ];
+  # Surface the mount in Nautilus's sidebar (gvfs hides fstab mounts by default).
+  showInFiles      = [ "x-gvfs-show" ];
 in
 {
   disko.devices.disk = {
@@ -72,7 +74,7 @@ in
             type = "btrfs";
             extraArgs = [ "-f" "-L" "games" ];
             subvolumes = {
-              "@games"           = { mountpoint = "/games";           mountOptions = btrfsGamesOpts; };
+              "@games"           = { mountpoint = "/games";           mountOptions = btrfsGamesOpts ++ showInFiles; };
               "@games-snapshots" = { mountpoint = "/games/.snapshots"; mountOptions = btrfsGamesOpts; };
             };
           };
@@ -94,9 +96,9 @@ in
             type = "btrfs";
             extraArgs = [ "-f" "-L" "data" ];
             subvolumes = {
-              "@data"    = { mountpoint = "/data";            mountOptions = btrfsOpts; };
+              "@data"    = { mountpoint = "/data";            mountOptions = btrfsOpts ++ showInFiles; };
               "@vms"     = { mountpoint = "/var/lib/libvirt"; mountOptions = btrfsNoCowOpts; };
-              "@backups" = { mountpoint = "/backups";         mountOptions = btrfsOpts; };
+              "@backups" = { mountpoint = "/backups";         mountOptions = btrfsOpts ++ showInFiles; };
             };
           };
         };

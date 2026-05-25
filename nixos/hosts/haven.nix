@@ -54,6 +54,14 @@
     shell = pkgs.fish;
   };
 
+  # Disko creates the extra btrfs subvolumes as root:root 755, so the user
+  # can't write to them. Chown the mount points (not their contents) on each
+  # activation so Nautilus can create folders without sudo.
+  systemd.tmpfiles.rules = [
+    "d /games 0755 ${username} users -"
+    "d /data  0755 ${username} users -"
+  ];
+
   # Set to the NixOS release you install with — do not change after initial install
   system.stateVersion = "25.11";
 }
