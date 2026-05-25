@@ -17,7 +17,6 @@
 
   home.packages = with pkgs; [
     vesktop
-    fuzzel
     wlogout
     pavucontrol
     nautilus
