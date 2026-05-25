@@ -1,7 +1,10 @@
 { hostConfig, lib, pkgs, ... }:
 let
-  signingKey = hostConfig.git.signingKey or null;
-  email = hostConfig.git.email or "you@example.com";
+  # Defaults match the haven entry in local.nix so an accidentally-missing
+  # local.nix is a no-op (no identity drift, no allowed_signers churn) rather
+  # than a destructive activation. Override per-host via hostConfig.git.*.
+  signingKey = hostConfig.git.signingKey or "~/.ssh/id_ed25519_haven";
+  email = hostConfig.git.email or "schimera@schimera.dev";
 in
 {
   programs.git = {
@@ -12,7 +15,7 @@ in
         s = "status";
       };
       user = {
-        name = hostConfig.git.name or "Your Name";
+        name = hostConfig.git.name or "Sebastian Chimera";
         email = email;
       } // lib.optionalAttrs (signingKey != null) { signingKey = signingKey; };
       init.defaultBranch = "main";

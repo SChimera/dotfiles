@@ -84,5 +84,11 @@
           hostConfig = (local.haven or {}).hostConfig or {};
         };
       };
+
+      # `nix flake check` builds each host's toplevel so CI / pre-push catches
+      # eval errors and broken modules without a full nixos-rebuild.
+      checks."x86_64-linux" = builtins.mapAttrs
+        (_: cfg: cfg.config.system.build.toplevel)
+        self.nixosConfigurations;
     };
 }
