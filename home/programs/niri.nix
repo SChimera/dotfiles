@@ -79,14 +79,6 @@
       xwayland-satellite {
       }
 
-      // Workaround for xwayland-satellite#156: Steam dropdown menus render with
-      // a gap when the main window is fullscreen, so the cursor can't traverse
-      // into them and they dismiss immediately.
-      window-rule {
-        match app-id=r#"^steam$"# title=r#"^Steam$"#
-        open-fullscreen false
-      }
-
       prefer-no-csd
 
       screenshot-path "~/Pictures/Screenshots/screenshot_%Y-%m-%d_%H-%M-%S.png"
