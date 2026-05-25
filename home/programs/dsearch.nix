@@ -1,7 +1,5 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs-unstable, ... }:
 let
-  pkgs-unstable = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system};
-
   # Upstream's flake ships a stale vendorHash as of danksearch 0.3.1 (db1c8f8,
   # 2026-05-21). Rebuild from the same source with the hash Nix actually
   # computes. Drop this whole override once upstream bumps vendorHash.
