@@ -125,10 +125,11 @@
         Mod+F { maximize-column; }
         Mod+Shift+F { fullscreen-window; }
 
-        // Screenshots
-        Print        { screenshot; }
-        Shift+Print  { screenshot-window; }
-        Ctrl+Print   { screenshot-screen; }
+        // Screenshots — keyboard has no Print key; remapped to Mod+Shift+S
+        // (Windows snipping-tool muscle memory).
+        Mod+Shift+S      { screenshot; }
+        Mod+Shift+W      { screenshot-window; }
+        Mod+Ctrl+Shift+S { screenshot-screen; }
 
         // Media / brightness
         XF86AudioRaiseVolume  { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+"; }
