@@ -22,6 +22,8 @@
     nautilus
     imv
     mpv
+    nodejs
+    uv
 
     # CLI staples
     ripgrep
