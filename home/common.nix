@@ -6,6 +6,7 @@
     ./programs/alacritty.nix
     ./programs/dms.nix
     ./programs/dsearch.nix
+    ./programs/firefox.nix
     ./programs/git.nix
     ./programs/shell.nix
     ./programs/ssh.nix
@@ -15,7 +16,6 @@
   home.homeDirectory = "/home/${username}";
 
   home.packages = with pkgs; [
-    firefox
     vesktop
     fuzzel
     wlogout
