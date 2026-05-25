@@ -54,8 +54,8 @@
         default-column-width { proportion 0.5; }
         focus-ring {
           width 2
-          active-color "#7fc8ff"
-          inactive-color "#505050"
+          // Colors come from DMS's dms/colors.kdl (matugen-generated palette).
+          // See programs/dms.nix → niri.includes.filesToInclude.
         }
         border {
           off
