@@ -37,5 +37,17 @@
 
     # dgop not in nixpkgs 25.11 stable — pull from its own flake
     dgop.package = inputs.dgop.packages.${pkgs.stdenv.hostPlatform.system}.default;
+
+    # Upstream DMS ships its matugen foot template with a [colors-dark] section
+    # header, but foot only knows [colors] — there are no theme-aware sections.
+    # Foot prints "invalid section name: colors-dark" and skips the palette.
+    # Patch the section header at install time so the file foot.ini includes
+    # actually parses. Remove if/when upstream fixes the template.
+    package = inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.dms-shell.overrideAttrs (old: {
+      postInstall = (old.postInstall or "") + ''
+        substituteInPlace $out/share/quickshell/dms/matugen/templates/foot.ini \
+          --replace-fail '[colors-dark]' '[colors]'
+      '';
+    });
   };
 }

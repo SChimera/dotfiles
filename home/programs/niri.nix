@@ -85,7 +85,7 @@
 
       // Keybindings — Mod = Super key
       binds {
-        Mod+Return { spawn "foot"; }
+        Mod+Return { spawn "alacritty"; }
         Mod+D { spawn "fuzzel"; }
         Mod+V { spawn "dms" "ipc" "call" "clipboard" "toggle"; }
         Mod+Alt+L { spawn "dms" "ipc" "call" "lock" "lock"; }
