@@ -108,11 +108,6 @@
     wget
     git
     curl
-    claude-code
-    protonvpn-gui
-    vscode
-    neovim
-    spotify
     unzip
     p7zip
     btop

@@ -25,6 +25,13 @@
     nodejs
     uv
 
+    # User-scope GUI apps
+    vscode
+    neovim
+    spotify
+    protonvpn-gui
+    claude-code
+
     # CLI staples
     ripgrep
     fd
