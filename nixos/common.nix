@@ -121,5 +121,6 @@
     wl-clipboard
     grim
     slurp
+    bun
   ];
 }
