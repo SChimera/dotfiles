@@ -77,7 +77,6 @@
   # Required for Wayland compositors
   security.polkit.enable = true;
 
-  # XDG portals (niri uses xdg-desktop-portal-gnome or -gtk)
   xdg.portal = {
     enable = true;
     extraPortals = [

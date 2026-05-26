@@ -24,9 +24,6 @@ let
 in
 {
   disko.devices.disk = {
-    # =====================================================================
-    # Disk 0 — Crucial T705 (Gen5): boot + OS + Nix store + /home
-    # =====================================================================
     main = {
       type = "disk";
       device = "/dev/disk/by-id/nvme-CT2000T705SSD3_2505E9A44AFF";
@@ -60,9 +57,6 @@ in
       };
     };
 
-    # =====================================================================
-    # Disk 1 — Samsung 990 PRO: Steam / Lutris / Bottles libraries
-    # =====================================================================
     games = {
       type = "disk";
       device = "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S6Z2NJ0TA20804Y";
@@ -82,9 +76,6 @@ in
       };
     };
 
-    # =====================================================================
-    # Disk 2 — Samsung 990 PRO: bulk data + VMs + on-disk backups
-    # =====================================================================
     data = {
       type = "disk";
       device = "/dev/disk/by-id/nvme-Samsung_SSD_990_PRO_2TB_S6Z2NJ0TA20813V";

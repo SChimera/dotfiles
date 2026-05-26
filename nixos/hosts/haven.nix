@@ -31,7 +31,7 @@
   programs.dank-material-shell.greeter = {
     enable = true;
     compositor.name = "niri";
-    configHome = "/home/${username}"; # syncs your DMS theme to the greeter
+    configHome = "/home/${username}";
     logs = {
       save = true;
       path = "/tmp/dms-greeter.log";
@@ -59,8 +59,8 @@
   hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
-    modesetting.enable = true;      # required for Wayland
-    open = true;                    
+    modesetting.enable = true;
+    open = true;
     nvidiaSettings = true;
     powerManagement.enable = true;  # better suspend/resume on Wayland
   };

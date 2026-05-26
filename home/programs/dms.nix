@@ -13,7 +13,6 @@
       restartIfChanged = true;
     };
 
-    # Core features
     enableSystemMonitoring = true;  # system monitoring widgets (dgop)
     enableVPN = true;               # VPN management widget
     enableDynamicTheming = true;    # wallpaper-based theming (matugen)

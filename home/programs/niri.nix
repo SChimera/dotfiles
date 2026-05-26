@@ -13,8 +13,6 @@
   programs.niri.settings = { };
 
   programs.niri = {
-    # Raw KDL config string — gives full control and matches niri wiki examples exactly
-    # Swap to `settings = { ... }` if you prefer type-checked Nix attrs (niri-flake docs)
     config = ''
       // Cursor — niri reads theme/size from this block (not XCURSOR_* env).
       // Adwaita is installed via home.packages in home/common.nix.

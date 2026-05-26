@@ -48,7 +48,7 @@
 
     # Wayland / niri quality-of-life
     cliphist
-    xwayland-satellite-unstable # paired with niri-unstable for X11 app support
+    xwayland-satellite-unstable
     satty
     wf-recorder
     wev
@@ -64,6 +64,5 @@
 
   programs.home-manager.enable = true;
 
-  # Set once at first install — never change
   home.stateVersion = "25.11";
 }
