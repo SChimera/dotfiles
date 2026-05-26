@@ -5,9 +5,13 @@
     shellAliases = {
       ls = "eza";
       ll = "eza -la";
+      la = "eza -a";
+      lt = "eza --tree --level=2";
       ".." = "cd ..";
+      "..." = "cd ../..";
       nixswitch = "sudo nixos-rebuild switch --flake ~/code/personal/dotfiles#(hostname)";
-      homeswitch = "home-manager switch --flake ~/code/personal/dotfiles";
+      nixup = "nix flake update --flake ~/code/personal/dotfiles";
+      nixgc = "sudo nix-collect-garbage -d";
       cc = "claude --dangerously-skip-permissions";
     };
   };
