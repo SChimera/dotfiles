@@ -1,18 +1,4 @@
-{ inputs, pkgs-unstable, ... }:
-let
-  # Upstream's flake ships a stale vendorHash as of danksearch 0.3.1 (db1c8f8,
-  # 2026-05-21). Rebuild from the same source with the hash Nix actually
-  # computes. Drop this whole override once upstream bumps vendorHash.
-  dsearchPkg = pkgs-unstable.buildGoModule {
-    pname = "dsearch";
-    version = "0.3.1";
-    src = inputs.danksearch;
-    vendorHash = "sha256-scvZWbMHAhpYWCU0xZK1E6h6sAkoXegqI1iYS44fcCg=";
-    subPackages = [ "cmd/dsearch" ];
-    ldflags = [ "-s" "-w" "-X main.Version=0.3.1" ];
-    meta.mainProgram = "dsearch";
-  };
-in
+{ inputs, ... }:
 {
   imports = [
     inputs.danksearch.homeModules.dsearch
@@ -20,7 +6,6 @@ in
 
   programs.dsearch = {
     enable = true;
-    package = dsearchPkg;
 
     config.index_paths = [
       {
