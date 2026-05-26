@@ -2,7 +2,6 @@
 {
   imports = [
     ./programs/niri.nix
-    ./programs/foot.nix
     ./programs/alacritty.nix
     ./programs/dms.nix
     ./programs/dsearch.nix
