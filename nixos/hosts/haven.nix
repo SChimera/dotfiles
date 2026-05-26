@@ -38,6 +38,23 @@
     };
   };
 
+  # Lian Li Uni Controllers. Bypassing the hardware.uni-sync module: it's
+  # broken when devices=[] (declares /etc/uni-sync/uni-sync.json without
+  # setting its text, tripping etc activation), and its services.udev.packages
+  # line is a no-op since the nixpkgs derivation ships no udev rules. uni-sync
+  # uses libusb directly and needs root — run it as `sudo uni-sync` to print
+  # device IDs, then fill in configs below.
+  environment.systemPackages = [ pkgs.uni-sync ];
+  environment.etc."uni-sync/uni-sync.json".text = builtins.toJSON {
+    configs = [
+      {
+        device_id = "VID:3314/PID:41219/SN:6243168001";
+        sync_rgb = true;
+        channels = builtins.genList (_: { mode = "PWM"; speed = 50; }) 4;
+      }
+    ];
+  };
+
   # NVIDIA GPU (required for Wayland/niri)
   hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
