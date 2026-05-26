@@ -13,14 +13,6 @@
     niri-flake = {
       url = "github:sodiboo/niri-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
-      # Pin xwayland-satellite back one commit to work around upstream regression
-      # that breaks Steam top-bar hover dropdowns under Niri.
-      # See: https://github.com/Supreeeme/xwayland-satellite/issues/435
-      # Remove this override once the regression is fixed upstream.
-      inputs.xwayland-satellite-unstable = {
-        url = "github:Supreeeme/xwayland-satellite/a879e5e0896a326adc79c474bf457b8b99011027";
-        flake = false;
-      };
     };
 
     dms = {
