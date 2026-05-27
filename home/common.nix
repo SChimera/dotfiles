@@ -22,6 +22,7 @@
     imv
     mpv
     nodejs
+    python3
     uv
 
     # User-scope GUI apps
