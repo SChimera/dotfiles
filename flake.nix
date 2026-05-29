@@ -4,6 +4,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # Pinned to the merge commit of nixpkgs#525449 (claude-code 2.1.154 -> 2.1.156).
+    # Bump or remove once nixos-unstable catches up past 2.1.156.
+    nixpkgs-claude-code.url = "github:NixOS/nixpkgs/b2b9231f548668621aed54158e7a7bf5a388c7b5";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
@@ -36,7 +39,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, niri-flake, dms, dgop, danksearch, disko, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-claude-code, home-manager, niri-flake, dms, dgop, danksearch, disko, ... }@inputs:
     let
       local = if builtins.pathExists ./local.nix then import ./local.nix else {};
 
@@ -45,7 +48,8 @@
           inherit system;
           specialArgs = {
             inherit inputs hostname username hostConfig;
-            pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+            pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+            pkgs-claude-code = import nixpkgs-claude-code { inherit system; config.allowUnfree = true; };
           };
           modules = [
             ./nixos/common.nix
@@ -60,7 +64,8 @@
               home-manager.useUserPackages = true;
               home-manager.extraSpecialArgs = {
                 inherit inputs username hostConfig;
-                pkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
+                pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
+                pkgs-claude-code = import nixpkgs-claude-code { inherit system; config.allowUnfree = true; };
               };
               # niri-flake.nixosModules.niri auto-injects homeModules.config into
               # sharedModules. Do not add homeModules.niri here — it re-imports

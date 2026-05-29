@@ -1,4 +1,4 @@
-{ pkgs, username, ... }:
+{ pkgs, pkgs-unstable, pkgs-claude-code, username, ... }:
 {
   imports = [
     ./programs/niri.nix
@@ -26,11 +26,12 @@
     uv
 
     # User-scope GUI apps
+    ungoogled-chromium
     vscode
     neovim
     spotify
     protonvpn-gui
-    claude-code
+    pkgs-claude-code.claude-code
 
     # CLI staples
     ripgrep
