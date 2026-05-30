@@ -7,6 +7,7 @@
     ./programs/dsearch.nix
     ./programs/firefox.nix
     ./programs/git.nix
+    ./programs/neovim.nix
     ./programs/shell.nix
     ./programs/ssh.nix
   ];
@@ -28,7 +29,6 @@
     # User-scope GUI apps
     ungoogled-chromium
     vscode
-    neovim
     spotify
     protonvpn-gui
     pkgs-claude-code.claude-code

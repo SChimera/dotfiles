@@ -16,7 +16,14 @@
     };
   };
 
-  programs.starship.enable = true;
+  programs.starship = {
+    enable = true;
+    settings = {
+      # `go version` (and other version probes) can exceed the 500ms default
+      # on a cold Nix-store page-in when first entering a repo.
+      command_timeout = 2000;
+    };
+  };
 
   programs.zoxide = {
     enable = true;
