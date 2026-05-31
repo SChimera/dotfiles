@@ -38,10 +38,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Pinned to the nixos-26.05 branch so it matches stable nixpkgs + home-manager.
+    # Pinned to the nixos-26.05 branch to match stable nixpkgs + home-manager.
+    # Intentionally NOT following our nixpkgs: nixvim builds against its own
+    # tested nixos-26.05 pin, which avoids the programs.nixvim.nixpkgs.source
+    # warning (at the cost of a second, near-identical nixpkgs in the lock).
     nixvim = {
       url = "github:nix-community/nixvim/nixos-26.05";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
