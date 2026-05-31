@@ -25,6 +25,9 @@
 
   # Bootloader — assumes UEFI. For legacy BIOS swap to grub.
   boot.loader.systemd-boot.enable = true;
+  # Cap boot-menu entries. Generations are still GC'd by age (nix.gc in
+  # common.nix); this just stops the menu filling with dozens of them.
+  boot.loader.systemd-boot.configurationLimit = 20;
   boot.loader.efi.canTouchEfiVariables = true;
 
   # DankGreeter — syncs DMS theme into the login screen
