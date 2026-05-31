@@ -30,7 +30,7 @@
     ungoogled-chromium
     vscode
     spotify
-    protonvpn-gui
+    proton-vpn
     pkgs-claude-code.claude-code
 
     # CLI staples

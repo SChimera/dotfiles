@@ -179,7 +179,7 @@
   home.packages = with pkgs; [
     # formatters / linters
     stylua
-    nixfmt-rfc-style
+    nixfmt
     ruff
     prettierd
     shfmt
