@@ -2,14 +2,14 @@
   description = "NixOS configuration for my hosts";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     # Pinned to the merge commit of nixpkgs#525449 (claude-code 2.1.154 -> 2.1.156).
     # Bump or remove once nixos-unstable catches up past 2.1.156.
     nixpkgs-claude-code.url = "github:NixOS/nixpkgs/b2b9231f548668621aed54158e7a7bf5a388c7b5";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -38,9 +38,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Pinned to the nixos-25.11 branch so it matches stable nixpkgs + home-manager.
+    # Pinned to the nixos-26.05 branch so it matches stable nixpkgs + home-manager.
     nixvim = {
-      url = "github:nix-community/nixvim/nixos-25.11";
+      url = "github:nix-community/nixvim/nixos-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
