@@ -45,6 +45,12 @@
     nixvim = {
       url = "github:nix-community/nixvim/nixos-26.05";
     };
+
+    # Nix packaging of sgtaziz/lian-li-linux (fan/RGB control for the SL V2).
+    lian-li-linux = {
+      url = "github:SChimera/lian-li-linux-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-claude-code, home-manager, niri-flake, dms, dgop, danksearch, disko, ... }@inputs:
@@ -66,6 +72,8 @@
             disko.nixosModules.disko
             niri-flake.nixosModules.niri
             dms.nixosModules.greeter
+            inputs.lian-li-linux.nixosModules.default
+            { services.lianli.enable = true; }
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;

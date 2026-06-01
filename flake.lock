@@ -124,6 +124,26 @@
         "type": "github"
       }
     },
+    "lian-li-linux": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1780340522,
+        "narHash": "sha256-cnrruvoFwQTNWmDZHU8lHcEvj5ua9jtd5kZnhxelDro=",
+        "owner": "SChimera",
+        "repo": "lian-li-linux-nix",
+        "rev": "1a865ca56925a54dcbb8a77927a4ce907eee5e31",
+        "type": "github"
+      },
+      "original": {
+        "owner": "SChimera",
+        "repo": "lian-li-linux-nix",
+        "type": "github"
+      }
+    },
     "niri-flake": {
       "inputs": {
         "niri-stable": "niri-stable",
@@ -312,6 +332,7 @@
         "disko": "disko",
         "dms": "dms",
         "home-manager": "home-manager",
+        "lian-li-linux": "lian-li-linux",
         "niri-flake": "niri-flake",
         "nixpkgs": "nixpkgs",
         "nixpkgs-claude-code": "nixpkgs-claude-code",
