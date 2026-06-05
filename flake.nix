@@ -4,9 +4,9 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # Pinned to the merge commit of nixpkgs#525449 (claude-code 2.1.154 -> 2.1.156).
-    # Bump or remove once nixos-unstable catches up past 2.1.156.
-    nixpkgs-claude-code.url = "github:NixOS/nixpkgs/b2b9231f548668621aed54158e7a7bf5a388c7b5";
+    # Dedicated input so claude-code tracks unstable's newest packaged version
+    # without dragging the unstable desktop stack. `nix flake update nixpkgs-claude-code` to bump.
+    nixpkgs-claude-code.url = "github:NixOS/nixpkgs/nixos-unstable";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
