@@ -21,6 +21,13 @@
     wlogout
     pavucontrol
     nautilus
+    kdePackages.dolphin
+    kdePackages.breeze-icons # complete icon set so Dolphin/KDE widgets aren't missing icons
+    kdePackages.breeze # Breeze widget style; plasma-integration selects it from kdeglobals
+    kdePackages.kio-extras # extra KIO protocols (sftp/smb network browsing) + thumbnails
+    kdePackages.kdegraphics-thumbnailers # image-format thumbnails in Dolphin
+    kdePackages.ffmpegthumbs # video thumbnails in Dolphin
+    kdePackages.ark # archive create/extract from Dolphin's context menu
     imv
     mpv
     nodejs
@@ -63,6 +70,18 @@
   ];
 
   home.sessionVariables.XCURSOR_THEME = "Adwaita";
+
+  # KDE/Qt theming for Dolphin et al. The KDE platform theme (plasma-integration)
+  # is what builds the *full* QPalette from the matugen KColorScheme in kdeglobals.
+  # Without it there is no Qt platform-theme plugin, so QPalette::Text (icon-view
+  # label text) stays default-black while only the Breeze-drawn chrome/sidebar get
+  # themed — the "legible sidebar, black folder names" bug. This module installs
+  # kdePackages.plasma-integration and sets QT_QPA_PLATFORMTHEME=kde + QT_PLUGIN_PATH.
+  # (Colors themselves come from DMS's kdeglobals; see qt-theming memory.)
+  qt = {
+    enable = true;
+    platformTheme.name = "kde";
+  };
 
   programs.home-manager.enable = true;
 
