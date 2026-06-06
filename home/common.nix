@@ -16,6 +16,7 @@
   home.homeDirectory = "/home/${username}";
 
   home.packages = with pkgs; [
+    discord
     vesktop
     wlogout
     pavucontrol
