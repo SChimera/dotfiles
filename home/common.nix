@@ -20,7 +20,6 @@
     vesktop
     wlogout
     pavucontrol
-    nautilus
     kdePackages.dolphin
     kdePackages.breeze-icons # complete icon set so Dolphin/KDE widgets aren't missing icons
     kdePackages.breeze # Breeze widget style; plasma-integration selects it from kdeglobals
