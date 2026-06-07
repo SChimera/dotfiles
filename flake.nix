@@ -18,8 +18,12 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    # Track the default branch, not /stable: the stable branch is frozen
+    # (Apr 2026) and still ships a greeter niri config with the removed
+    # `keep-max-bpc-unchanged` debug node, which breaks under niri-unstable.
+    # Default branch keeps pace with the bleeding-edge niri we run.
     dms = {
-      url = "github:AvengeMedia/DankMaterialShell/stable";
+      url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
