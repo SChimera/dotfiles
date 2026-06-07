@@ -64,4 +64,68 @@ in
     # Images -> swayimg
     // lib.genAttrs imageMimes (_: swayimg);
   };
+
+  # Upstream swayimg.desktop ships NoDisplay=true (it's CLI-first). KDE/Dolphin
+  # refuses to launch a NoDisplay app as a handler, so double-clicking an image
+  # does nothing (gio/xdg-open don't care, which is why the default "looks" set).
+  # Ship a user-level override with the same desktop id (higher XDG precedence)
+  # and NoDisplay cleared so Dolphin will actually launch it. Written via
+  # home.file rather than xdg.desktopEntries because the latter only emits when
+  # xdg.enable = true (off here), and we don't want full XDG management.
+  home.file.".local/share/applications/swayimg.desktop".text = ''
+    [Desktop Entry]
+    Type=Application
+    Name=Swayimg
+    GenericName=Image viewer
+    Comment=Image viewer for Sway/Wayland
+    Icon=swayimg
+    Exec=env LC_NUMERIC=C swayimg %F
+    Terminal=false
+    Categories=Graphics;Viewer
+    StartupNotify=false
+    MimeType=${lib.concatStringsSep ";" imageMimes};
+    NoDisplay=false
+  '';
+
+  # --- Make KDE/Dolphin able to LAUNCH file handlers under niri ----------------
+  # In a bare niri session (no Plasma), KDE can't locate its applications menu,
+  # so KIO can't resolve/launch ANY handler — double-clicking a file in Dolphin
+  # silently fails with "The name is not activatable". Fix (no kded6, which would
+  # conflict with the DMS/quickshell tray):
+  #   1. XDG_MENU_PREFIX=plasma- in the session env, via home.sessionVariables
+  #      (hm-session-vars.sh, sourced at login). Verified this is the channel that
+  #      actually reaches the niri session here — it's how XCURSOR_THEME gets in.
+  #      environment.d only reaches the systemd --user manager, NOT niri-spawned
+  #      apps like Dolphin, so it does not work for this.
+  #   2. A plasma-applications.menu for KDE to read (minimal "include all").
+  # KService rebuilds its sycoca cache on next app launch. Takes effect only after
+  # a full re-login (session env is established at login), not just `nixswitch`.
+  # Ref: archwiki "Dolphin#Dolphin_cannot_find_applications_(when_running_under_another_window_manager)"
+  home.sessionVariables.XDG_MENU_PREFIX = "plasma-";
+
+  home.file.".config/menus/plasma-applications.menu".text = ''
+    <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN" "http://www.freedesktop.org/standards/menu-spec/menu-1.0.dtd">
+    <Menu>
+      <Name>Applications</Name>
+      <DefaultAppDirs/>
+      <DefaultDirectoryDirs/>
+      <Include><All/></Include>
+    </Menu>
+  '';
+
+  # swayimg's default window background is transparent (#00000000), so the area
+  # around a non-filling image shows the wallpaper / an odd tint. Give it a solid
+  # dark background. (LC_NUMERIC=C in the .desktop Exec above also stops swayimg's
+  # locale-sensitive float parser choking on dotted values under en-DK.)
+  home.file.".config/swayimg/config".text = ''
+    [viewer]
+    window = #1e1e1eff
+
+    [slideshow]
+    window = #1e1e1eff
+
+    [gallery]
+    window = #1e1e1eff
+    background = #1e1e1eff
+  '';
 }
