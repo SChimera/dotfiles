@@ -10,6 +10,7 @@
     ./programs/neovim.nix
     ./programs/shell.nix
     ./programs/ssh.nix
+    ./programs/mimeapps.nix
   ];
 
   home.username = username;
@@ -28,6 +29,8 @@
     kdePackages.ffmpegthumbs # video thumbnails in Dolphin
     kdePackages.ark # archive create/extract from Dolphin's context menu
     imv
+    swayimg # minimal Wayland image viewer — default image handler (see programs/mimeapps.nix)
+    kdePackages.gwenview # full KDE image viewer/editor; matches Breeze theming, available via Open With
     mpv
     nodejs
     python3
