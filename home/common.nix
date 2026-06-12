@@ -41,17 +41,7 @@
     vscode
     spotify
     proton-vpn
-    # Temporary pin to 2.1.170: nixpkgs-claude-code (unstable) lags npm and was
-    # only at 2.1.158 on 2026-06-09. Drop this override and revert to plain
-    # `pkgs-claude-code.claude-code` once `nix flake update nixpkgs-claude-code`
-    # ships >= 2.1.170 (then this whole block is redundant).
-    (pkgs-claude-code.claude-code.overrideAttrs (_: {
-      version = "2.1.170";
-      src = pkgs-claude-code.fetchurl {
-        url = "https://downloads.claude.ai/claude-code-releases/2.1.170/linux-x64/claude";
-        hash = "sha256-hJ4AcnegRCqydXDT49bUN4dQeUZZDo3RlH5aObcIH54=";
-      };
-    }))
+    pkgs-claude-code.claude-code
 
     # CLI staples
     ripgrep
