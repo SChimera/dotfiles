@@ -1,4 +1,25 @@
 { pkgs, inputs, username, hostConfig, ... }:
+let
+  # The greeter launches quickshell directly via niri's spawn-at-startup,
+  # bypassing the `dms` wrapper that (in a normal desktop session) injects the
+  # qtimageformats Qt plugin into QT_PLUGIN_PATH. Without that plugin quickshell
+  # can't decode webp, so a webp wallpaper renders as nothing and the greeter
+  # falls back to a black background — the QML login UI itself still draws fine.
+  # Wrap quickshell so the webp image-format plugin is always on its
+  # QT_PLUGIN_PATH (matches quickshell's qtbase 6.11; --prefix preserves the
+  # paths quickshell's own wrapper prepends). Desktop sessions are unaffected.
+  greeterQuickshell = pkgs.symlinkJoin {
+    name = "quickshell-greeter-webp";
+    paths = [ pkgs.quickshell ];
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postBuild = ''
+      for bin in "$out"/bin/*; do
+        wrapProgram "$bin" \
+          --prefix QT_PLUGIN_PATH : ${pkgs.kdePackages.qtimageformats}/lib/qt-6/plugins
+      done
+    '';
+  };
+in
 {
   imports = [
     # Copy here after running `nixos-generate-config` on the machine
@@ -35,6 +56,8 @@
     enable = true;
     compositor.name = "niri";
     configHome = "/home/${username}";
+    # webp-capable quickshell so the wallpaper renders (see greeterQuickshell above)
+    quickshell.package = greeterQuickshell;
     logs = {
       save = true;
       path = "/tmp/dms-greeter.log";
