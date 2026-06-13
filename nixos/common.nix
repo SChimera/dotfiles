@@ -2,8 +2,14 @@
 {
   nix = {
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "root" "@wheel" ];
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      trusted-users = [
+        "root"
+        "@wheel"
+      ];
     };
     gc = {
       automatic = true;
@@ -58,6 +64,10 @@
 
   programs.fish.enable = true;
   programs.dconf.enable = true;
+
+  # Run generic-Linux dynamic binaries (e.g. LSP/Copilot servers that editors
+  # like Zed download at runtime) by providing a real /lib64 loader.
+  programs.nix-ld.enable = true;
 
   programs.ssh.startAgent = true;
   # niri-flake / gnome-keyring auto-enable gcr-ssh-agent, which conflicts with

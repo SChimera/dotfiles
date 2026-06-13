@@ -24,7 +24,8 @@ in
         ControlPath = "~/.ssh/master-%r@%n:%p";
         ControlPersist = "10m";
       };
-    } // lib.optionalAttrs (identityFile != null) {
+    }
+    // lib.optionalAttrs (identityFile != null) {
       "github.com".IdentityFile = identityFile;
       # "gitlab.com".IdentityFile = identityFile;
     };
