@@ -7,7 +7,7 @@
     extraPackages = with pkgs; [
       nil
       nixd
-      nixfmt-rfc-style # nixd's formatter (configured in Zed settings)
+      nixfmt # nixd's formatter (RFC 166 style; configured in Zed settings)
     ];
     # Evaluating Zed: keep settings/keymaps editable from the in-app UI.
     # Once settled, copy settings.json into userSettings and drop these.
