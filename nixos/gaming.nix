@@ -20,4 +20,10 @@
 
   # 32-bit support — required for DXVK, Wine, and many older games
   hardware.graphics.enable32Bit = true;
+
+  # Wine's winedevice.exe ignores SIGTERM, so a running Bottles/Wine scope makes
+  # the user manager wait the full 90s stop timeout before SIGKILL at shutdown.
+  # Shorten it for user units only (system services keep their graceful window).
+  # https://github.com/bottlesdevs/bottles/issues/4423
+  systemd.user.extraConfig = "DefaultTimeoutStopSec=10s";
 }
