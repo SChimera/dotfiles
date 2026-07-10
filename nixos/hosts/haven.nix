@@ -109,6 +109,11 @@ in
     powerManagement.enable = true;  # better suspend/resume on Wayland
   };
 
+  services.ollama = {
+    enable = true;
+    package = pkgs.ollama-cuda;
+  };
+
   users.users.${username} = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager" "video" "audio" "input" ];

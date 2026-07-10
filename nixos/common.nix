@@ -10,6 +10,10 @@
         "root"
         "@wheel"
       ];
+      # NixOS CUDA maintainers' cache — Hydra doesn't build unfree CUDA
+      # packages (e.g. ollama-cuda), this avoids compiling them locally.
+      substituters = [ "https://cache.nixos-cuda.org" ];
+      trusted-public-keys = [ "cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=" ];
     };
     gc = {
       automatic = true;
@@ -107,6 +111,12 @@
   services.udisks2.enable = true;
   services.gvfs.enable = true;
 
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true; # `docker` CLI alias
+    defaultNetwork.settings.dns_enabled = true; # container-to-container DNS
+  };
+
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     nerd-fonts.noto
@@ -128,5 +138,6 @@
     grim
     slurp
     bun
+    podman-compose
   ];
 }
