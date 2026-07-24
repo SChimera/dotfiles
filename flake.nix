@@ -27,6 +27,14 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    # Greeter split out of DankMaterialShell (2026-07-24): DMS dropped its
+    # nixosModules.greeter; the login screen now lives here as its own flake.
+    # Provides programs.dms-greeter (was programs.dank-material-shell.greeter).
+    dank-greeter = {
+      url = "github:AvengeMedia/dank-greeter";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
     dgop = {
       url = "github:AvengeMedia/dgop";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -75,7 +83,7 @@
             ./nixos/hosts/${hostname}-disko.nix
             disko.nixosModules.disko
             niri-flake.nixosModules.niri
-            dms.nixosModules.greeter
+            inputs.dank-greeter.nixosModules.dank-greeter
             inputs.lian-li-linux.nixosModules.default
             { services.lianli.enable = true; }
             home-manager.nixosModules.home-manager

@@ -70,8 +70,9 @@ in
   boot.loader.systemd-boot.configurationLimit = 20;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # DankGreeter — syncs DMS theme into the login screen
-  programs.dank-material-shell.greeter = {
+  # DankGreeter — syncs DMS theme into the login screen. Split out of DMS into
+  # the standalone dank-greeter flake (2026-07-24); namespace is now dms-greeter.
+  programs.dms-greeter = {
     enable = true;
     compositor.name = "niri";
     configHome = "/home/${username}";
