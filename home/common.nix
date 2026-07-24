@@ -51,6 +51,7 @@
     gh
     delta
     fastfetch
+    nix-output-monitor # `nom` — readable build tree; nh drives builds through it
 
     # k8s
     kubectl

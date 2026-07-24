@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 {
   programs.fish = {
     enable = true;
@@ -9,11 +9,20 @@
       lt = "eza --tree --level=2";
       ".." = "cd ..";
       "..." = "cd ../..";
-      nixswitch = "sudo nixos-rebuild switch --flake ~/code/personal/dotfiles#(hostname)";
+      nixswitch = "nh os switch";
       nixup = "nix flake update --flake ~/code/personal/dotfiles";
       nixgc = "sudo nix-collect-garbage -d";
       cc = "claude --dangerously-skip-permissions";
     };
+  };
+
+  # nh: nicer nixos-rebuild — prints a package diff on every switch and drives
+  # builds through nom (readable tree instead of a flat log). flake path is set
+  # once here; `nh os switch` auto-detects the hostname → nixosConfigurations.<host>,
+  # so this same config works unchanged on a second host.
+  programs.nh = {
+    enable = true;
+    flake = "${config.home.homeDirectory}/code/personal/dotfiles";
   };
 
   programs.starship = {
