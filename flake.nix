@@ -4,9 +4,11 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # Dedicated input so claude-code tracks unstable's newest packaged version
+    # Dedicated input so claude-code tracks nixpkgs' newest packaged version
     # without dragging the unstable desktop stack. `nix flake update nixpkgs-claude-code` to bump.
-    nixpkgs-claude-code.url = "github:NixOS/nixpkgs/nixos-unstable";
+    # master, not nixos-unstable: the update bot lands claude-code bumps here first,
+    # channel promotion lags days behind.
+    nixpkgs-claude-code.url = "github:NixOS/nixpkgs/master";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
