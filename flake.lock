@@ -274,11 +274,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1780344599,
-        "narHash": "sha256-63hECRbC4Mc4ulmeQOiWQWHbBouwwaI9yjmoMHWAT4A=",
+        "lastModified": 1786123068,
+        "narHash": "sha256-4Ttj+gkv+dY0B2kAhJ2wdtyE3jgcpL3q44c3dvtSopk=",
         "owner": "SChimera",
         "repo": "lian-li-linux-nix",
-        "rev": "e95d456bf783fb0b016192029a148cbcc754abb2",
+        "rev": "bc9f54628a19220477f70299d7053bbf131cf416",
         "type": "github"
       },
       "original": {
