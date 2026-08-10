@@ -37,4 +37,14 @@
     # dgop not in nixpkgs 25.11 stable — pull from its own flake
     dgop.package = inputs.dgop.packages.${pkgs.stdenv.hostPlatform.system}.default;
   };
+
+  # jcode's launch-hotkey installer splices a managed binds{} block directly
+  # into ~/.config/niri/config.kdl, replacing HM's symlink with a plain file.
+  # Without force, the next boot's home-manager-seb.service then fails with
+  # "Existing file .../config.kdl would be clobbered". Force lets HM re-own the
+  # file on every activation; jcode detects the change and re-splices its
+  # hotkeys on next launch (niri hot-reloads), so nothing is lost.
+  # "niri-config-dms" is the xdg.configFile attr name the DMS module uses for
+  # its niri/config.kdl include shim.
+  xdg.configFile."niri-config-dms".force = true;
 }
