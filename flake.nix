@@ -37,11 +37,6 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
-    dgop = {
-      url = "github:AvengeMedia/dgop";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-
     danksearch = {
       url = "github:AvengeMedia/danksearch";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -76,7 +71,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-claude-code, home-manager, niri-flake, dms, dgop, danksearch, disko, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-claude-code, home-manager, niri-flake, dms, danksearch, disko, ... }@inputs:
     let
       local = if builtins.pathExists ./local.nix then import ./local.nix else {};
 

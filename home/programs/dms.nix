@@ -33,9 +33,6 @@
     # runtime (it reads its own `cursor` block) — so the theme never
     # round-trips. Cursor is set declaratively in niri.nix instead.
     niri.includes.filesToInclude = [ "colors" "outputs" "wpblur" "windowrules" ];
-
-    # dgop not in nixpkgs 25.11 stable — pull from its own flake
-    dgop.package = inputs.dgop.packages.${pkgs.stdenv.hostPlatform.system}.default;
   };
 
   # jcode's launch-hotkey installer splices a managed binds{} block directly
