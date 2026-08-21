@@ -55,15 +55,6 @@
       url = "github:nix-community/nixvim/nixos-26.05";
     };
 
-    # Nix packaging of 1jehuang/jcode (grigio's fork adds the flake; the source
-    # built is upstream, pinned by hash in grigio's lock). We build from source:
-    # grigio's binary cache would require trusting his signing key globally.
-    # `follows` breaks store-path parity with his cache — fine, we don't use it.
-    jcode = {
-      url = "github:grigio/jcode";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
-
     # Nix packaging of sgtaziz/lian-li-linux (fan/RGB control for the SL V2).
     lian-li-linux = {
       url = "github:SChimera/lian-li-linux-nix";
