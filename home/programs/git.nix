@@ -5,10 +5,19 @@ let
   # than a destructive activation. Override per-host via hostConfig.git.*.
   signingKey = hostConfig.git.signingKey or "~/.ssh/id_ed25519_haven";
   email = hostConfig.git.email or "schimera@schimera.dev";
+  workEmail = "sec@moviestarplanet.com";
 in
 {
   programs.git = {
     enable = true;
+    # Work repos get the work identity by remote URL.
+    includes = map (url: {
+      condition = "hasconfig:remote.*.url:${url}";
+      contents.user.email = workEmail;
+    }) [
+      "git@github.com:moviestarplanet/**"
+      "https://github.com/moviestarplanet/**"
+    ];
     settings = {
       alias = {
         oops = "commit --amend --no-edit";
@@ -41,7 +50,7 @@ in
       if [ -f "$key" ]; then
         install -d -m 700 "$HOME/.config/git"
         pub="$(${pkgs.openssh}/bin/ssh-keygen -y -f "$key")"
-        printf '%s %s\n' "${email}" "$pub" > "$HOME/.config/git/allowed_signers"
+        printf '%s %s\n' "${email},${workEmail}" "$pub" > "$HOME/.config/git/allowed_signers"
       fi
     '');
 }
