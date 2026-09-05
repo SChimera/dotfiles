@@ -56,10 +56,11 @@
     };
 
     # Nix packaging of sgtaziz/lian-li-linux (fan/RGB control for the SL V2).
-    lian-li-linux = {
-      url = "github:SChimera/lian-li-linux-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # No nixpkgs follows on purpose: with one, every stable bump re-derived the
+    # whole Tauri crate graph (webkit2gtk-sys etc.) from source — a build no
+    # cache has. Against its own locked nixpkgs it only rebuilds when this
+    # input is bumped, at the price of a duplicate webkit closure in the store.
+    lian-li-linux.url = "github:SChimera/lian-li-linux-nix";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-claude-code, home-manager, niri-flake, dms, danksearch, disko, ... }@inputs:
@@ -82,7 +83,14 @@
             niri-flake.nixosModules.niri
             inputs.dank-greeter.nixosModules.dank-greeter
             inputs.lian-li-linux.nixosModules.default
-            { services.lianli.enable = true; }
+            {
+              services.lianli.enable = true;
+              # Use the flake's own packages output (built against ITS locked
+              # nixpkgs) instead of the module's default, which callPackages
+              # against this system's pkgs — that default re-derived the whole
+              # Tauri crate graph from source on every stable-nixpkgs bump.
+              services.lianli.package = inputs.lian-li-linux.packages.${system}.default;
+            }
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;

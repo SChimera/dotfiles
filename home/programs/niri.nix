@@ -72,8 +72,9 @@
       spawn-at-startup "sh" "-c" "wl-paste --type image --watch cliphist store"
 
       // X11 app support — niri auto-spawns xwayland-satellite when this block
-      // is present. Requires niri-unstable (configured in nixos/hosts/haven.nix).
-      // niri finds the binary on PATH via home.packages (xwayland-satellite-unstable).
+      // is present. Supported since the niri 26.04 release (package set in
+      // nixos/hosts/haven.nix). niri finds the binary on PATH via
+      // home.packages (pkgs-unstable.xwayland-satellite in common.nix).
       xwayland-satellite {
       }
 

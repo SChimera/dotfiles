@@ -50,16 +50,17 @@ in
 
   time.timeZone = hostConfig.timezone or "Europe/Copenhagen";
 
-  # niri-flake overlay — exposes pkgs.niri-{stable,unstable} and
-  # pkgs.xwayland-satellite-{stable,unstable} built against this nixpkgs.
-  nixpkgs.overlays = [ inputs.niri-flake.overlays.niri ];
-
   # Enable niri session — also adds it to displayManager.sessionPackages.
   # niri-flake.nixosModules.niri auto-injects homeModules.config into HM
   # sharedModules, so user-level config in home/programs/niri.nix still works.
   programs.niri.enable = true;
-  # niri-unstable is required for the xwayland-satellite KDL block in home/programs/niri.nix.
-  programs.niri.package = pkgs.niri-unstable;
+  # niri release from nixpkgs-unstable: Hydra-built, always on cache.nixos.org.
+  # niri-flake's overlay built git niri against this system's nixpkgs — a
+  # derivation no cache has, so every stable-nixpkgs bump recompiled niri and
+  # its whole Rust dep chain (~1150 drvs). The 26.04 release supports the
+  # xwayland-satellite KDL block, and dank-greeter picks this package up
+  # automatically via programs.niri.package.
+  programs.niri.package = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.niri;
   # DMS provides its own polkit agent; disable niri-flake's to avoid conflict.
   systemd.user.services.niri-flake-polkit.enable = false;
 

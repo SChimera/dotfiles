@@ -60,7 +60,7 @@
 
     # Wayland / niri quality-of-life
     cliphist
-    xwayland-satellite-unstable
+    pkgs-unstable.xwayland-satellite
     satty
     wf-recorder
     wev
