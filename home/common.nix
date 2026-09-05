@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, pkgs-ai-tools, username, ... }:
+{ inputs, pkgs, pkgs-unstable, pkgs-ai-tools, username, ... }:
 {
   imports = [
     ./programs/niri.nix
@@ -42,7 +42,7 @@
     spotify
     proton-vpn
     pkgs-ai-tools.claude-code
-    pkgs-ai-tools.codex
+    inputs.codex-nix.packages.${pkgs.stdenv.hostPlatform.system}.default
     pkgs-ai-tools.t3code
 
     # CLI staples

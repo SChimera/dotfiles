@@ -10,6 +10,13 @@
     # channel promotion lags days behind.
     nixpkgs-ai-tools.url = "github:NixOS/nixpkgs/master";
 
+    # Codex releases faster than nixpkgs. Use the upstream release binaries
+    # packaged by this dedicated flake, while sharing our AI-tools nixpkgs pin.
+    codex-nix = {
+      url = "github:sadjow/codex-nix";
+      inputs.nixpkgs.follows = "nixpkgs-ai-tools";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
