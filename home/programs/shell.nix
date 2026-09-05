@@ -13,6 +13,7 @@
       nixup = "nix flake update --flake ~/code/personal/dotfiles";
       nixgc = "sudo nix-collect-garbage -d";
       cc = "claude --dangerously-skip-permissions";
+      cx = "codex --yolo";
     };
   };
 
