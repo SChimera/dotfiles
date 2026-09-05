@@ -4,11 +4,11 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    # Dedicated input so claude-code tracks nixpkgs' newest packaged version
-    # without dragging the unstable desktop stack. `nix flake update nixpkgs-claude-code` to bump.
-    # master, not nixos-unstable: the update bot lands claude-code bumps here first,
+    # Dedicated input so fast-moving developer tools track nixpkgs' newest packaged versions
+    # without dragging the unstable desktop stack. `nix flake update nixpkgs-ai-tools` to bump.
+    # master, not nixos-unstable: package updates land here first,
     # channel promotion lags days behind.
-    nixpkgs-claude-code.url = "github:NixOS/nixpkgs/master";
+    nixpkgs-ai-tools.url = "github:NixOS/nixpkgs/master";
 
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
@@ -63,7 +63,7 @@
     lian-li-linux.url = "github:SChimera/lian-li-linux-nix";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-claude-code, home-manager, niri-flake, dms, danksearch, disko, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-ai-tools, home-manager, niri-flake, dms, danksearch, disko, ... }@inputs:
     let
       local = if builtins.pathExists ./local.nix then import ./local.nix else {};
 
@@ -73,7 +73,7 @@
           specialArgs = {
             inherit inputs hostname username hostConfig;
             pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
-            pkgs-claude-code = import nixpkgs-claude-code { inherit system; config.allowUnfree = true; };
+            pkgs-ai-tools = import nixpkgs-ai-tools { inherit system; config.allowUnfree = true; };
           };
           modules = [
             ./nixos/common.nix
@@ -98,7 +98,7 @@
               home-manager.extraSpecialArgs = {
                 inherit inputs username hostConfig;
                 pkgs-unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
-                pkgs-claude-code = import nixpkgs-claude-code { inherit system; config.allowUnfree = true; };
+                pkgs-ai-tools = import nixpkgs-ai-tools { inherit system; config.allowUnfree = true; };
               };
               # niri-flake.nixosModules.niri auto-injects homeModules.config into
               # sharedModules. Do not add homeModules.niri here — it re-imports

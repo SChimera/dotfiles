@@ -265,13 +265,13 @@
         "type": "github"
       }
     },
-    "nixpkgs-claude-code": {
+    "nixpkgs-ai-tools": {
       "locked": {
-        "lastModified": 1788592844,
-        "narHash": "sha256-mL24FGqHrHK9QRhDparwpSSWmVwLNWoqouWtkaC9UIs=",
+        "lastModified": 1788608636,
+        "narHash": "sha256-RqeFOwW329f4i1f5QlJgQYwgEZvxIHJsUYlzIBxsKsY=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "1b109851478492fc72069e34b055fba17f46d5b7",
+        "rev": "0af3d1402dec3fc7e93635e511d1f7428c89cebf",
         "type": "github"
       },
       "original": {
@@ -376,7 +376,7 @@
         "lian-li-linux": "lian-li-linux",
         "niri-flake": "niri-flake",
         "nixpkgs": "nixpkgs_2",
-        "nixpkgs-claude-code": "nixpkgs-claude-code",
+        "nixpkgs-ai-tools": "nixpkgs-ai-tools",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixvim": "nixvim"
       }

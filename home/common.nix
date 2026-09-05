@@ -1,4 +1,4 @@
-{ pkgs, pkgs-unstable, pkgs-claude-code, username, ... }:
+{ pkgs, pkgs-unstable, pkgs-ai-tools, username, ... }:
 {
   imports = [
     ./programs/niri.nix
@@ -41,7 +41,9 @@
     vscode
     spotify
     proton-vpn
-    pkgs-claude-code.claude-code
+    pkgs-ai-tools.claude-code
+    pkgs-ai-tools.codex
+    pkgs-ai-tools.t3code
 
     # CLI staples
     ripgrep
