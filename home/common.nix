@@ -17,8 +17,11 @@
   home.homeDirectory = "/home/${username}";
 
   home.packages = with pkgs; [
-    discord
-    vesktop
+    # Discord's host and module downloads pinned from its official update manifest.
+    (pkgs-unstable.discord.override {
+      source = builtins.fromJSON (builtins.readFile ../pkgs/discord-source.json);
+    })
+    pkgs-unstable.vesktop
     wlogout
     pavucontrol
     kdePackages.dolphin
