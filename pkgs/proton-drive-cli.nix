@@ -14,11 +14,11 @@
 # secret store, which in turn needs glib — both supplied via the wrapper below.
 stdenv.mkDerivation (finalAttrs: {
   pname = "proton-drive-cli";
-  version = "0.4.6";
+  version = "0.8.0";
 
   src = fetchurl {
     url = "https://proton.me/download/drive/cli/${finalAttrs.version}/linux-x64/proton-drive";
-    hash = "sha256-iaVBMaCBHkLqGOxDBz1us0fYD1lO0CJgCbuUEY9M2oY=";
+    hash = "sha256-lEPXcXGciSeQ2xfm8C7Nma18U1kzKfOmfHdnfc5XdzU=";
   };
 
   dontUnpack = true;
