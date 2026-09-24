@@ -149,18 +149,19 @@ configuration does not enable an SSH server; use the laptop console after reboot
 ### 5. First login
 
 Framework reuses Haven's existing SSH key for GitHub authentication and Git
-signing. Copy both `~/.ssh/id_ed25519_haven` and its `.pub` file from Haven to
-the same paths on the **laptop**, using an authenticated SSH connection or an
-encrypted removable drive. Keep the private key outside this checkout and the
-Nix store. Preserve any existing destination key rather than overwriting it.
+signing. Copy `~/.ssh/id_ed25519_haven` and its `.pub` file from Haven to
+`~/.ssh/id_ed25519` and `~/.ssh/id_ed25519.pub` on the **laptop**, using an
+authenticated SSH connection or an encrypted removable drive. Keep the private
+key outside this checkout and the Nix store. Preserve any existing destination
+key rather than overwriting it.
 
 On the **laptop**, set permissions and load the key into its SSH agent:
 
 ```bash
 chmod 700 ~/.ssh
-chmod 600 ~/.ssh/id_ed25519_haven
-chmod 644 ~/.ssh/id_ed25519_haven.pub
-ssh-add ~/.ssh/id_ed25519_haven
+chmod 600 ~/.ssh/id_ed25519
+chmod 644 ~/.ssh/id_ed25519.pub
+ssh-add ~/.ssh/id_ed25519
 ```
 
 Use the key's existing passphrase if prompted. Its existing GitHub registrations
