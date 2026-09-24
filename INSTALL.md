@@ -148,17 +148,28 @@ configuration does not enable an SSH server; use the laptop console after reboot
 
 ### 5. First login
 
-Generate a separate key on the **laptop**:
+Framework reuses Haven's existing SSH key for GitHub authentication and Git
+signing. Copy both `~/.ssh/id_ed25519_haven` and its `.pub` file from Haven to
+the same paths on the **laptop**, using an authenticated SSH connection or an
+encrypted removable drive. Keep the private key outside this checkout and the
+Nix store. Preserve any existing destination key rather than overwriting it.
+
+On the **laptop**, set permissions and load the key into its SSH agent:
 
 ```bash
-ssh-keygen -t ed25519 -C 'framework' -f ~/.ssh/id_ed25519_framework
-ssh-add ~/.ssh/id_ed25519_framework
+chmod 700 ~/.ssh
+chmod 600 ~/.ssh/id_ed25519_haven
+chmod 644 ~/.ssh/id_ed25519_haven.pub
+ssh-add ~/.ssh/id_ed25519_haven
 ```
 
-Add the public key to GitHub as an authentication key and a signing key. Complete
-section 6 before using `nixswitch`, which selects the final `framework`
-configuration and requires local Secure Boot keys. That rebuild also regenerates
-the allowed-signers file. Signed commits require this key.
+Use the key's existing passphrase if prompted. Its existing GitHub registrations
+apply on both hosts. For verified commits, the public key must also be registered
+as a signing key on GitHub.
+
+Complete section 6 before using `nixswitch`, which selects the final `framework`
+configuration and requires local Secure Boot keys. The rebuild also regenerates
+the allowed-signers file from the copied public key.
 
 Codex CLI, Vesktop, Spotify, and Proton VPN are installed through shared Home
 Manager configuration; Slack is specific to Framework. Sign into each app on the laptop. Import the employer's

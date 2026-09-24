@@ -21,9 +21,10 @@
       git = {
         name = "Sebastian Chimera";
         email = "sec@moviestarplanet.com";
-        signingKey = "~/.ssh/id_ed25519_framework";
+        # This laptop reuses the existing Haven SSH key.
+        signingKey = "~/.ssh/id_ed25519_haven";
       };
-      ssh.identityFile = "~/.ssh/id_ed25519_framework";
+      ssh.identityFile = "~/.ssh/id_ed25519_haven";
       workDirs = [ "code/work" "code/personal" ];
     };
   };

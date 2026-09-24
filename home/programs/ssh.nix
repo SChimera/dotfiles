@@ -6,8 +6,8 @@ in
 {
   programs.ssh = {
     enable = true;
-    # Generate per-machine key with:
-    # ssh-keygen -t ed25519 -C "hostname" -f ~/.ssh/id_ed25519_<hostname>
+    # local.nix selects each host's key path. Key material stays outside Git;
+    # see INSTALL.md for copying the existing key to Framework.
     # HM deprecated the auto-populated default block; opt out and supply our own
     # wildcard block (OpenSSH directive names) so AddKeysToAgent applies cleanly.
     enableDefaultConfig = false;
