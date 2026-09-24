@@ -4,6 +4,7 @@
   imports = [
     inputs.nixos-hardware.nixosModules.framework-intel-core-ultra-series3
     ./framework-hardware.nix
+    ./framework-secure-boot.nix
     ../desktop.nix
   ];
 

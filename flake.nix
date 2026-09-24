@@ -7,6 +7,10 @@
       url = "github:NixOS/nixos-hardware";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.1.0";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     # Dedicated input so fast-moving developer tools track nixpkgs' newest packaged versions
     # without dragging the unstable desktop stack. `nix flake update nixpkgs-ai-tools` to bump.
@@ -131,6 +135,22 @@
           hostname = "framework";
           username = local.framework.username;
           hostConfig = local.framework.hostConfig;
+        };
+        # Enable signing before sealing the disk key to the boot policy.
+        framework-secureboot = self.nixosConfigurations.framework.extendModules {
+          modules = [
+            ({ lib, ... }: {
+              boot.lanzaboote.measuredBoot.enable = lib.mkForce false;
+            })
+          ];
+        };
+        # First installation, before this laptop has its own Secure Boot keys.
+        framework-bootstrap = self.nixosConfigurations.framework-secureboot.extendModules {
+          modules = [
+            ({ lib, ... }: {
+              boot.lanzaboote.enable = lib.mkForce false;
+            })
+          ];
         };
       };
 

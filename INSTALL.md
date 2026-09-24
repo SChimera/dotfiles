@@ -30,8 +30,9 @@ SSD has been replaced. Evaluation alone cannot verify laptop suspend.
 
 ### 1. Boot the laptop's installer
 
-Boot a current NixOS graphical USB image in UEFI mode. This configuration uses
-systemd-boot without Secure Boot signing, so disable Secure Boot for this install.
+Boot a current NixOS graphical USB image in UEFI mode. Disable Secure Boot for
+the initial `framework-bootstrap` installation. Section 6 enables signing and
+TPM unlocking after the first successful boot.
 Connect to the network using the desktop network menu, preferably Ethernet for
 installation. Open a terminal on the **laptop**:
 
@@ -75,7 +76,7 @@ Review `local.nix`, including the work email and username, then:
 git add nixos/hosts/framework-hardware.nix nixos/hosts/framework-disko.nix
 nix flake check --no-build
 nix eval --raw .#nixosConfigurations.framework.config.disko.devices.disk.main.device
-nix build .#nixosConfigurations.framework.config.system.build.toplevel --no-link
+nix build .#nixosConfigurations.framework-bootstrap.config.system.build.toplevel --no-link
 ```
 
 The evaluated disk path must match the laptop's SSD. The layout creates a 1 GiB
@@ -86,7 +87,9 @@ subvolume is available for future use; it does not schedule snapshots or backups
 ### 3. Set the disk passphrase and install
 
 On **Haven**, keep the passphrase in a temporary RAM-backed file outside the
-checkout. Enter the passphrase you want to type when the laptop boots:
+checkout. This passphrase unlocks the first boots and remains your recovery
+method after TPM enrollment. Save it in a password manager accessible from
+another device:
 
 ```bash
 umask 077
@@ -106,7 +109,7 @@ configured laptop disk**. Verify the target IP and disk ID first.
 (
 set -euo pipefail
 nix run .#nixos-anywhere -- \
-  --flake .#framework \
+  --flake .#framework-bootstrap \
   --target-host "$target" \
   --disk-encryption-keys /tmp/framework-luks-password "$luks_keyfile" \
   --phases kexec,disko,install
@@ -152,10 +155,10 @@ ssh-keygen -t ed25519 -C 'framework' -f ~/.ssh/id_ed25519_framework
 ssh-add ~/.ssh/id_ed25519_framework
 ```
 
-Add the public key to GitHub as an authentication key and a signing key. Then
-run `nixswitch` to regenerate the allowed-signers file. Signed commits require
-this key. Commit the real hardware configuration and disk ID from Haven or the
-laptop so they are available for reinstalls.
+Add the public key to GitHub as an authentication key and a signing key. Complete
+section 6 before using `nixswitch`, which selects the final `framework`
+configuration and requires local Secure Boot keys. That rebuild also regenerates
+the allowed-signers file. Signed commits require this key.
 
 Codex CLI, Vesktop, Spotify, and Proton VPN are installed through shared Home
 Manager configuration; Slack is specific to Framework. Sign into each app on the laptop. Import the employer's
@@ -178,6 +181,92 @@ OpenVPN 3 uses systemd-resolved for VPN DNS; verify internal work domains
 when connected. Test the work VPN and Proton VPN separately before using both
 at once.
 
+### 6. Enable Secure Boot and automatic disk unlocking
+
+These configurations are stages for the same laptop, with hostname `framework`:
+
+| Flake configuration | Purpose |
+| --- | --- |
+| `framework-bootstrap` | Initial installation with unsigned systemd-boot |
+| `framework-secureboot` | Sign boot files and enable Secure Boot before creating the TPM policy |
+| `framework` | Normal use with Secure Boot and measured TPM unlocking |
+
+On the installed **laptop**, create its signing keys and install signed boot files:
+
+```bash
+cd ~/code/personal/dotfiles
+sudo sbctl create-keys
+sudo nixos-rebuild boot --flake .#framework-secureboot
+sudo sbctl verify
+```
+
+The systemd-boot and `nixos-generation-*.efi` images must be signed. Separate
+kernel files may appear unsigned because the signed Lanzaboote image verifies
+their hashes. Keep `/var/lib/sbctl` private and include it in an encrypted backup;
+never add signing keys to Git or the Nix store.
+
+Reboot into firmware settings. Under Framework's **Administer Secure Boot**,
+delete the individual signatures in **PK Options**, **KEK Options**, and **DB
+Options** to enter Setup Mode. Preserve **DBX**. Do not use **Erase all Secure
+Boot Settings**. Save and boot NixOS again, entering the disk passphrase.
+
+Enroll the laptop's keys together with Microsoft and firmware certificates:
+
+```bash
+sudo sbctl enroll-keys --microsoft --firmware-builtin
+```
+
+Reboot into firmware settings, enable **Enforce Secure Boot**, save, and boot
+NixOS. Enter the disk passphrase, then confirm `bootctl status` reports Secure
+Boot **enabled**. If it cannot boot, disable enforcement again and inspect the
+signed files before continuing.
+
+Now enable the TPM policy and reboot once more using the passphrase:
+
+```bash
+sudo nixos-rebuild boot --flake .#framework
+sudo reboot
+```
+
+After that boot, check the policy service and the PCRs it covers:
+
+```bash
+sudo systemctl status systemd-pcrlock-make-policy.service
+sudo jq '[.pcrValues[].pcr] | unique | sort' /var/lib/systemd/pcrlock.json
+```
+
+The service must have succeeded and the list must include **0, 4, and 7**. These
+cover firmware, the boot chain, and Secure Boot policy. Do not enroll an incomplete
+policy. Check `bootctl status` still reports Secure Boot enabled.
+
+Enroll the TPM, entering the existing disk passphrase locally when prompted:
+
+```bash
+sudo systemd-cryptenroll \
+  --tpm2-device=auto \
+  --tpm2-pcrs= \
+  --tpm2-with-pin=no \
+  --tpm2-pcrlock=/var/lib/systemd/pcrlock.json \
+  /dev/disk/by-partlabel/disk-main-luks
+sudo reboot
+```
+
+The empty `--tpm2-pcrs=` avoids adding a second static PCR binding; the managed
+policy supplies the checks. This adds a TPM slot and preserves the original
+passphrase slot. No disk passphrase should be needed for a normal boot afterward.
+The login password and screen lock still apply.
+
+Verify another reboot after a normal `nh os switch`. Lanzaboote updates the
+managed policy with the installed generations, keeping up to eight boot entries.
+Firmware changes can require the recovery passphrase. `systemd-pcrlock` is still
+experimental, so keep that recovery method available even after successful tests.
+If TPM unlocking fails, use the passphrase and investigate before changing any
+LUKS slots. Never wipe the passphrase slot during TPM recovery.
+
+References: [Lanzaboote setup](https://nix-community.github.io/lanzaboote/getting-started/prepare-your-system.html),
+[Framework firmware enrollment](https://nix-community.github.io/lanzaboote/getting-started/enable-secure-boot.html),
+[measured boot](https://nix-community.github.io/lanzaboote/how-to-guides/enable-measured-boot.html).
+
 ## Install directly from a live USB
 
 This route also works for Haven. Obtain this checkout on the live system, using
@@ -189,6 +278,7 @@ Use Bash, install Git with `nix-shell -p git` if needed, and enter the checkout:
 ```bash
 export NIX_CONFIG='experimental-features = nix-command flakes'
 host=framework # or haven
+install_config=framework-bootstrap # use haven when installing Haven
 ```
 
 Review `local.nix` and `nixos/hosts/$host-disko.nix`. For Framework, verify the
@@ -212,7 +302,7 @@ After verifying the disk IDs, partition and install using the pinned tools:
 set -euo pipefail
 sudo nix --extra-experimental-features 'nix-command flakes' run .#disko -- \
   --mode destroy,format,mount --flake ".#$host"
-sudo nixos-install --flake ".#$host" --no-root-password
+sudo nixos-install --flake ".#$install_config" --no-root-password
 sudo nixos-enter --root /mnt -c 'passwd seb'
 sudo mkdir -p /mnt/home/seb/code/personal/dotfiles
 sudo cp -a . /mnt/home/seb/code/personal/dotfiles/

@@ -35,7 +35,8 @@ in
             type = "luks";
             name = "cryptroot";
             # Used only to format/unlock during install, never included in the
-            # Nix store or initrd. Normal boot asks for the passphrase.
+            # Nix store or initrd. The passphrase remains the recovery method
+            # after TPM enrollment.
             passwordFile = "/tmp/framework-luks-password";
             # SSD TRIM through the LUKS layer (small information leak about
             # free space, standard trade-off for keeping the drive healthy).
