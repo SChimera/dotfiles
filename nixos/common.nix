@@ -1,5 +1,13 @@
-{ pkgs, ... }:
+{ pkgs, username, hostConfig, ... }:
 {
+  time.timeZone = hostConfig.timezone or "Europe/Copenhagen";
+
+  users.users.${username} = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" "networkmanager" "video" "audio" "input" ];
+    shell = pkgs.fish;
+  };
+
   nix = {
     settings = {
       experimental-features = [
@@ -28,8 +36,7 @@
 
   nixpkgs.config.allowUnfree = true;
 
-  # In-RAM compressed swap. No disk swap configured — at 64 GB RAM the
-  # T705's endurance is better spent on the Nix store than on paging.
+  # Compressed swap in RAM. Hosts using hibernation also need disk-backed swap.
   zramSwap = {
     enable = true;
     algorithm = "zstd";
@@ -47,7 +54,7 @@
   # /tmp in RAM — fast builds, automatic cleanup, no SSD wear.
   boot.tmp.useTmpfs = true;
 
-  # Nix build parallelism — let it use the full 8c/16t.
+  # Use the available CPU cores for Nix builds.
   nix.settings.max-jobs = "auto";
   nix.settings.cores = 0;
 

@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ config, pkgs, lib, ... }:
 {
   # DMS gates its pywalfox matugen template on `pywalfox` being in PATH
   # (core/internal/matugen/matugen.go: Commands: ["pywalfox"]). Without this,
@@ -54,7 +54,7 @@
       # font-family rule it sets at the bottom (and as a hook if a Material
       # userChrome ever gets added).
       userChrome = ''
-        @import url("file:///home/seb/.config/DankMaterialShell/firefox.css");
+        @import url("file://${config.home.homeDirectory}/.config/DankMaterialShell/firefox.css");
       '';
 
       # userChrome.css is ignored unless this pref is on.

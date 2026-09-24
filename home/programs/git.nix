@@ -1,10 +1,8 @@
 { hostConfig, lib, pkgs, ... }:
 let
-  # Defaults match the haven entry in local.nix so an accidentally-missing
-  # local.nix is a no-op (no identity drift, no allowed_signers churn) rather
-  # than a destructive activation. Override per-host via hostConfig.git.*.
-  signingKey = hostConfig.git.signingKey or "~/.ssh/id_ed25519_haven";
-  email = hostConfig.git.email or "schimera@schimera.dev";
+  # Every host declares its identity; a missing entry must not inherit Haven's key.
+  inherit (hostConfig.git) name email;
+  signingKey = hostConfig.git.signingKey or null;
   workEmail = "sec@moviestarplanet.com";
 in
 {
@@ -24,8 +22,7 @@ in
         s = "status";
       };
       user = {
-        name = hostConfig.git.name or "Sebastian Chimera";
-        email = email;
+        inherit name email;
       } // lib.optionalAttrs (signingKey != null) { signingKey = signingKey; };
       init.defaultBranch = "main";
       pull.rebase = true;
@@ -41,15 +38,15 @@ in
     };
   };
 
-  # Derive allowed_signers from the configured private key so commit
-  # verification works out of the box. Skipped when no signing key is set.
+  # Read the public key so activation also works with passphrase-protected keys.
+  # ssh-keygen creates this .pub file alongside the private key at first login.
   home.activation.gitAllowedSigners = lib.mkIf (signingKey != null)
     (lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       key="${signingKey}"
       key="''${key/#\~/$HOME}"
-      if [ -f "$key" ]; then
+      if [ -f "$key.pub" ]; then
         install -d -m 700 "$HOME/.config/git"
-        pub="$(${pkgs.openssh}/bin/ssh-keygen -y -f "$key")"
+        pub="$(cat "$key.pub")"
         printf '%s %s\n' "${email},${workEmail}" "$pub" > "$HOME/.config/git/allowed_signers"
       fi
     '');

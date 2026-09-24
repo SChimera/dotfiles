@@ -1,25 +1,5 @@
-{ pkgs, inputs, username, hostConfig, ... }:
+{ pkgs, inputs, username, ... }:
 let
-  # The greeter launches quickshell directly via niri's spawn-at-startup,
-  # bypassing the `dms` wrapper that (in a normal desktop session) injects the
-  # qtimageformats Qt plugin into QT_PLUGIN_PATH. Without that plugin quickshell
-  # can't decode webp, so a webp wallpaper renders as nothing and the greeter
-  # falls back to a black background — the QML login UI itself still draws fine.
-  # Wrap quickshell so the webp image-format plugin is always on its
-  # QT_PLUGIN_PATH (matches quickshell's qtbase 6.11; --prefix preserves the
-  # paths quickshell's own wrapper prepends). Desktop sessions are unaffected.
-  greeterQuickshell = pkgs.symlinkJoin {
-    name = "quickshell-greeter-webp";
-    paths = [ pkgs.quickshell ];
-    nativeBuildInputs = [ pkgs.makeWrapper ];
-    postBuild = ''
-      for bin in "$out"/bin/*; do
-        wrapProgram "$bin" \
-          --prefix QT_PLUGIN_PATH : ${pkgs.kdePackages.qtimageformats}/lib/qt-6/plugins
-      done
-    '';
-  };
-
   # Minimal AccountsService keyfile pointing at seb's icon. accounts-daemon
   # reports IconFile from this Icon= key (it does not scan the icons/ dir),
   # while the dms-greeter reads the icon file directly — so both the login
@@ -41,48 +21,18 @@ let
 in
 {
   imports = [
-    # Copy here after running `nixos-generate-config` on the machine
-    ./hardware-configuration.nix
+    ./haven-hardware.nix
+    ../desktop.nix
+    inputs.lian-li-linux.nixosModules.default
     ../gaming.nix
   ];
 
   networking.hostName = "haven";
 
-  time.timeZone = hostConfig.timezone or "Europe/Copenhagen";
-
-  # Enable niri session — also adds it to displayManager.sessionPackages.
-  # niri-flake.nixosModules.niri auto-injects homeModules.config into HM
-  # sharedModules, so user-level config in home/programs/niri.nix still works.
-  programs.niri.enable = true;
-  # niri release from nixpkgs-unstable: Hydra-built, always on cache.nixos.org.
-  # niri-flake's overlay built git niri against this system's nixpkgs — a
-  # derivation no cache has, so every stable-nixpkgs bump recompiled niri and
-  # its whole Rust dep chain (~1150 drvs). The 26.04 release supports the
-  # xwayland-satellite KDL block, and dank-greeter picks this package up
-  # automatically via programs.niri.package.
-  programs.niri.package = inputs.nixpkgs-unstable.legacyPackages.${pkgs.stdenv.hostPlatform.system}.niri;
-  # DMS provides its own polkit agent; disable niri-flake's to avoid conflict.
-  systemd.user.services.niri-flake-polkit.enable = false;
-
-  # Bootloader — assumes UEFI. For legacy BIOS swap to grub.
-  boot.loader.systemd-boot.enable = true;
-  # Cap boot-menu entries. Generations are still GC'd by age (nix.gc in
-  # common.nix); this just stops the menu filling with dozens of them.
-  boot.loader.systemd-boot.configurationLimit = 20;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # DankGreeter — syncs DMS theme into the login screen. Split out of DMS into
-  # the standalone dank-greeter flake (2026-07-24); namespace is now dms-greeter.
-  programs.dms-greeter = {
+  services.lianli = {
     enable = true;
-    compositor.name = "niri";
-    configHome = "/home/${username}";
-    # webp-capable quickshell so the wallpaper renders (see greeterQuickshell above)
-    quickshell.package = greeterQuickshell;
-    logs = {
-      save = true;
-      path = "/tmp/dms-greeter.log";
-    };
+    # Preserve the upstream package/cache instead of rebuilding against our nixpkgs.
+    package = inputs.lian-li-linux.packages.${pkgs.stdenv.hostPlatform.system}.default;
   };
 
   # AccountsService — lets the running DMS shell (Control Center, lock screen,
@@ -102,7 +52,6 @@ in
   '';
 
   # NVIDIA GPU (required for Wayland/niri)
-  hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
   hardware.nvidia = {
     modesetting.enable = true;
@@ -114,12 +63,6 @@ in
   services.ollama = {
     enable = true;
     package = pkgs.ollama-cuda;
-  };
-
-  users.users.${username} = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager" "video" "audio" "input" ];
-    shell = pkgs.fish;
   };
 
   # Disko creates the extra btrfs subvolumes as root:root 755, so the user

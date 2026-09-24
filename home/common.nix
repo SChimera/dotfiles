@@ -1,4 +1,4 @@
-{ inputs, pkgs, pkgs-unstable, pkgs-ai-tools, username, ... }:
+{ inputs, pkgs, pkgs-unstable, pkgs-ai-tools, username, lib, ... }:
 {
   imports = [
     ./programs/niri.nix
@@ -17,10 +17,6 @@
   home.homeDirectory = "/home/${username}";
 
   home.packages = with pkgs; [
-    # Discord's host and module downloads pinned from its official update manifest.
-    (pkgs-unstable.discord.override {
-      source = builtins.fromJSON (builtins.readFile ../pkgs/discord-source.json);
-    })
     pkgs-unstable.vesktop
     wlogout
     pavucontrol
@@ -93,5 +89,5 @@
 
   programs.home-manager.enable = true;
 
-  home.stateVersion = "25.11";
+  home.stateVersion = lib.mkDefault "25.11";
 }

@@ -14,17 +14,17 @@
     };
   };
 
-  # framework = {
-  #   username = "youruser";
-  #   hostConfig = {
-  #     timezone = "Europe/London";
-  #     git = {
-  #       name = "Your Name";
-  #       email = "you@work.com";
-  #       signingKey = "~/.ssh/id_ed25519_framework";
-  #     };
-  #     ssh.identityFile = "~/.ssh/id_ed25519_framework";
-  #     workDirs = [ "code/work" "code/personal" ];
-  #   };
-  # };
+  framework = {
+    username = "seb";
+    hostConfig = {
+      timezone = "Europe/Copenhagen";
+      git = {
+        name = "Sebastian Chimera";
+        email = "sec@moviestarplanet.com";
+        signingKey = "~/.ssh/id_ed25519_framework";
+      };
+      ssh.identityFile = "~/.ssh/id_ed25519_framework";
+      workDirs = [ "code/work" "code/personal" ];
+    };
+  };
 }

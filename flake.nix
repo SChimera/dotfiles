@@ -3,6 +3,10 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     # Dedicated input so fast-moving developer tools track nixpkgs' newest packaged versions
     # without dragging the unstable desktop stack. `nix flake update nixpkgs-ai-tools` to bump.
@@ -34,6 +38,11 @@
     dms = {
       url = "github:AvengeMedia/DankMaterialShell";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+
+    dms-openvpn3 = {
+      url = "github:jetersen/dms-openvpn3";
+      flake = false;
     };
 
     # Greeter split out of DankMaterialShell (2026-07-24): DMS dropped its
@@ -72,7 +81,7 @@
 
   outputs = { self, nixpkgs, nixpkgs-unstable, nixpkgs-ai-tools, home-manager, niri-flake, dms, danksearch, disko, ... }@inputs:
     let
-      local = if builtins.pathExists ./local.nix then import ./local.nix else {};
+      local = import ./local.nix;
 
       mkHost = { hostname, username, hostConfig ? {}, system ? "x86_64-linux" }:
         nixpkgs.lib.nixosSystem {
@@ -87,17 +96,6 @@
             ./nixos/hosts/${hostname}.nix
             ./nixos/hosts/${hostname}-disko.nix
             disko.nixosModules.disko
-            niri-flake.nixosModules.niri
-            inputs.dank-greeter.nixosModules.dank-greeter
-            inputs.lian-li-linux.nixosModules.default
-            {
-              services.lianli.enable = true;
-              # Use the flake's own packages output (built against ITS locked
-              # nixpkgs) instead of the module's default, which callPackages
-              # against this system's pkgs — that default re-derived the whole
-              # Tauri crate graph from source on every stable-nixpkgs bump.
-              services.lianli.package = inputs.lian-li-linux.packages.${system}.default;
-            }
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
@@ -117,11 +115,22 @@
     in {
       formatter."x86_64-linux" = nixpkgs.legacyPackages."x86_64-linux".alejandra;
 
+      # Install tools use the same locked inputs as the host configurations.
+      packages."x86_64-linux" = {
+        disko = disko.packages."x86_64-linux".default;
+        nixos-anywhere = nixpkgs.legacyPackages."x86_64-linux".nixos-anywhere;
+      };
+
       nixosConfigurations = {
         haven = mkHost {
           hostname = "haven";
-          username = (local.haven or {}).username or "seb";
-          hostConfig = (local.haven or {}).hostConfig or {};
+          username = local.haven.username;
+          hostConfig = local.haven.hostConfig;
+        };
+        framework = mkHost {
+          hostname = "framework";
+          username = local.framework.username;
+          hostConfig = local.framework.hostConfig;
         };
       };
 

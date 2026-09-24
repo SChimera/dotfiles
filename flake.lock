@@ -136,6 +136,22 @@
         "type": "github"
       }
     },
+    "dms-openvpn3": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1789499603,
+        "narHash": "sha256-x3rS6U3QcPJdlg5vElxrWNpyPqbEvEmhVqs1wDaaXc4=",
+        "owner": "jetersen",
+        "repo": "dms-openvpn3",
+        "rev": "53ad87df3247a54a13fc7074acbd0729555ff1d4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "jetersen",
+        "repo": "dms-openvpn3",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -288,6 +304,26 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789978172,
+        "narHash": "sha256-FIRXajv1pPZ+l6On6ekkmcQ6le0Zi0ncRUoR3nB0vKA=",
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "9ebcb7766700d7e006d9505247bd7ce0426f4232",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1785989512,
@@ -412,9 +448,11 @@
         "danksearch": "danksearch",
         "disko": "disko",
         "dms": "dms",
+        "dms-openvpn3": "dms-openvpn3",
         "home-manager": "home-manager",
         "lian-li-linux": "lian-li-linux",
         "niri-flake": "niri-flake",
+        "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-ai-tools": "nixpkgs-ai-tools",
         "nixpkgs-unstable": "nixpkgs-unstable",

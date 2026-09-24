@@ -3,7 +3,7 @@
   # `programs.niri.enable` is declared only by niri-flake.homeModules.niri, which
   # we deliberately do not import (it conflicts with the NixOS module's auto-inject
   # of homeModules.config). Enablement happens at the NixOS level via
-  # `programs.niri.enable = true` in nixos/hosts/haven.nix. This file only sets the
+  # `programs.niri.enable = true` in nixos/desktop.nix. This file only sets the
   # config option, which comes from homeModules.config -> settings.module.
   # Stub the structured `settings` to a non-null value so DMS's include shim
   # (which probes `settings.layout.border.enable` to decide whether to emit
@@ -73,7 +73,7 @@
 
       // X11 app support — niri auto-spawns xwayland-satellite when this block
       // is present. Supported since the niri 26.04 release (package set in
-      // nixos/hosts/haven.nix). niri finds the binary on PATH via
+      // nixos/desktop.nix). niri finds the binary on PATH via
       // home.packages (pkgs-unstable.xwayland-satellite in common.nix).
       xwayland-satellite {
       }

@@ -191,6 +191,5 @@
     cargo
     rustc
     rustfmt
-    dotnet-sdk
   ];
 }
