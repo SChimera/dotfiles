@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+set -euo pipefail
+export WINEPREFIX="$HOME/.local/share/msp-wine/prefix"
+export WINEDEBUG="${WINEDEBUG:--all}"
+export WINEDLLOVERRIDES="winemenubuilder.exe=d"
+game="$WINEPREFIX/drive_c/Games/MovieStarPlanet/MovieStarPlanet.exe"
+usage() {
+    echo 'Usage: msp-wine-setup install INSTALLER.exe | configure | proxy on/off | trust CERT.der'
+}
+case ${1:-} in
+install)
+    [[ $# == 2 && -f $2 ]] || { usage; exit 1; }
+    [[ ! -f $game ]] || { echo 'MovieStarPlanet is already installed; use configure.'; exit 1; }
+    mkdir -p "$(dirname "$WINEPREFIX")"
+    wineboot -u
+    winetricks -q mfc42 dotnet48
+    winetricks -q win10
+    wine "$(realpath -- "$2")" /VERYSILENT /SUPPRESSMSGBOXES /NORESTART '/DIR=C:\Games\MovieStarPlanet'
+    [[ -f $game ]] || { echo 'Installer did not create the expected game executable.' >&2; exit 1; }
+    ;;
+configure)
+    [[ -f $game ]] || { echo 'Install MovieStarPlanet first.' >&2; exit 1; }
+    ;;
+proxy)
+    [[ $# == 2 && ( $2 == on || $2 == off ) && -d $WINEPREFIX ]] || { usage; exit 1; }
+    enabled=0; [[ $2 != on ]] || enabled=1
+    key='HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings'
+    wine reg add "$key" /v ProxyServer /t REG_SZ /d 'http=127.0.0.1:8888;https=127.0.0.1:8888' /f
+    wine reg add "$key" /v ProxyOverride /t REG_SZ /d 'localhost;127.0.0.1;<local>' /f
+    wine reg add "$key" /v ProxyEnable /t REG_DWORD /d "$enabled" /f
+    exit
+    ;;
+trust)
+    [[ $# == 2 && -f $2 && -d $WINEPREFIX ]] || { usage; exit 1; }
+    exec wine "$MSP_WINE_HELPERS/import-cert.exe" "$(winepath -w "$(realpath -- "$2")")"
+    ;;
+*) usage; exit 1 ;;
+esac
+backup="$HOME/.local/state/msp-wine-setup/$(date +%Y%m%d-%H%M%S)-$$"
+mkdir -p "$backup"
+wine reg export 'HKCU\Software\Wine\X11 Driver' "$backup/x11.reg" /y || true
+wine reg export 'HKCU\Software\Wine\Drivers' "$backup/drivers.reg" /y || true
+wine reg export 'HKCU\Control Panel\Desktop' "$backup/desktop.reg" /y || true
+wine reg export 'HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer' "$backup/explorer.reg" /y || true
+wine reg add 'HKCU\Software\Wine\Drivers' /v Graphics /t REG_SZ /d x11 /f
+wine reg add 'HKCU\Software\Wine\X11 Driver' /v UseXRandR /t REG_SZ /d N /f
+wine reg add 'HKCU\Software\Wine\X11 Driver' /v UseXVidMode /t REG_SZ /d N /f
+wine reg add 'HKCU\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer' /v NoDesktop /t REG_DWORD /d 1 /f
+python3 - <<'PY'
+import os, pathlib, struct
+dest = pathlib.Path(os.environ['WINEPREFIX']) / 'drive_c/msp-wine/black.bmp'
+dest.parent.mkdir(parents=True, exist_ok=True)
+w, h = 2560, 1440
+size = w * h * 3
+dest.write_bytes(struct.pack('<2sIHHI', b'BM', 54+size, 0, 0, 54) + struct.pack('<IiiHHIIiiII', 40, w, h, 1, 24, 0, size, 0, 0, 0, 0) + bytes(size))
+PY
+echo "Configured MovieStarPlanet. Registry backups: $backup"

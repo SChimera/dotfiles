@@ -10,6 +10,7 @@ in
   imports = [
     ../common.nix
     ../programs/dms-openvpn3.nix
+    ../programs/msp-wine.nix
   ];
 
   home.packages = with pkgs; [

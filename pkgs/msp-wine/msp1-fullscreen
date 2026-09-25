@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+export WINEPREFIX="$HOME/.local/share/msp-wine/prefix"
+export WINEDEBUG="${WINEDEBUG:--all}"
+export WINEDLLOVERRIDES="winemenubuilder.exe=d"
+cd "$WINEPREFIX/drive_c/Games/MovieStarPlanet"
+wine explorer /desktop=MSP1,2560x1396 start /unix "$PWD/MovieStarPlanet.exe" &
+wine "$MSP_WINE_HELPERS/borderless.exe" 2371 1396 2560 1396
+wine "$MSP_WINE_HELPERS/borderless.exe" 2371 1396 2560 1396 --watch &
+python3 - <<'PY'
+import json, subprocess
+windows = json.loads(subprocess.check_output(['niri', 'msg', '--json', 'windows']))
+for window in windows:
+    if window['app_id'] != 'explorer.exe' or window['title'] != 'MSP1 - Wine Desktop':
+        continue
+    ids = subprocess.check_output(['xdotool', 'search', '--name', '^MSP1 - Wine Desktop$'], text=True).split()
+    fullscreen = any('_NET_WM_STATE_FULLSCREEN' in subprocess.check_output(['xprop', '-id', xid, '_NET_WM_STATE'], text=True) for xid in ids)
+    def action(name, *args):
+        subprocess.run(['niri', 'msg', 'action', name, '--id', str(window['id']), *args], check=True)
+    if fullscreen:
+        action('fullscreen-window')
+    action('move-window-to-floating')
+    action('set-window-width', '2560')
+    action('set-window-height', '1396')
+    action('move-floating-window', '--x', '0', '--y', '0')
+PY
+wait

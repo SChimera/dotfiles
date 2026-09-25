@@ -1,5 +1,15 @@
-{ ... }:
+{ config, lib, ... }:
 {
+  imports = [
+    {
+      options.local.niri.extraConfig = lib.mkOption {
+        type = lib.types.lines;
+        default = "";
+        description = "Additional niri rules supplied by application modules.";
+      };
+    }
+  ];
+
   # `programs.niri.enable` is declared only by niri-flake.homeModules.niri, which
   # we deliberately do not import (it conflicts with the NixOS module's auto-inject
   # of homeModules.config). Enablement happens at the NixOS level via
@@ -138,6 +148,6 @@
         XF86MonBrightnessUp   { spawn "brightnessctl" "set" "10%+"; }
         XF86MonBrightnessDown { spawn "brightnessctl" "set" "10%-"; }
       }
-    '';
+    '' + config.local.niri.extraConfig;
   };
 }
