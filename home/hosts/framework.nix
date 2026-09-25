@@ -28,6 +28,14 @@ in
 
   home.sessionVariables.DOTNET_ROOT = "${pkgs.dotnet-sdk_10}/share/dotnet";
 
+  # Refresh the domain file with devops-openvpn/scripts/export-dns-domains.py.
+  xdg.configFile."dms-openvpn3/dns.json".text = builtins.toJSON {
+    profiles.framework = {
+      enabled = true;
+      file = "${config.xdg.configHome}/dms-openvpn3/application-domains.json";
+    };
+  };
+
   # Seed first-login defaults without making DMS's settings file read-only.
   # Later changes made in DMS Settings survive rebuilds.
   home.activation.seedDmsSettings = lib.hm.dag.entryAfter [ "writeBoundary" ] ''

@@ -154,11 +154,11 @@
     "dms-openvpn3": {
       "flake": false,
       "locked": {
-        "lastModified": 1789499603,
-        "narHash": "sha256-x3rS6U3QcPJdlg5vElxrWNpyPqbEvEmhVqs1wDaaXc4=",
+        "lastModified": 1790322526,
+        "narHash": "sha256-tucPK0dBEopZcQY8BaCpNlvMbOK6lAkYCDBlwQ+bMr0=",
         "owner": "jetersen",
         "repo": "dms-openvpn3",
-        "rev": "53ad87df3247a54a13fc7074acbd0729555ff1d4",
+        "rev": "d9a36de5333a9cc58683d756cfbf86da6e4abfcf",
         "type": "github"
       },
       "original": {

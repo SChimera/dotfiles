@@ -1,5 +1,5 @@
 # Framework Laptop 13 Pro, Intel Core Ultra X7 358H, 32 GB RAM.
-{ inputs, ... }:
+{ inputs, username, ... }:
 {
   imports = [
     inputs.nixos-hardware.nixosModules.framework-intel-core-ultra-series3
@@ -18,6 +18,20 @@
   programs.openvpn3.enable = true;
   services.resolved.enable = true;
   networking.networkmanager.dns = "systemd-resolved";
+
+  # Allow the active local user to apply DMS VPN DNS routing on tun0.
+  # This covers all processes of that user, not only the plugin.
+  security.polkit.extraConfig = ''
+    polkit.addRule(function(action, subject) {
+      if (subject.user === ${builtins.toJSON username} &&
+          subject.local && subject.active &&
+          action.lookup("interface") === "tun0" &&
+          (action.id === "org.freedesktop.resolve1.set-domains" ||
+           action.id === "org.freedesktop.resolve1.set-default-route")) {
+        return polkit.Result.YES;
+      }
+    });
+  '';
 
   # Suspend only. The disk layout has no persistent swap for hibernation.
   systemd.sleep.settings.Sleep = {
