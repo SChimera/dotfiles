@@ -1,5 +1,7 @@
 { pkgs, config, ... }:
 {
+  home.sessionPath = [ "${config.home.homeDirectory}/.dotnet/tools" ];
+
   programs.fish = {
     enable = true;
     shellAliases = {
