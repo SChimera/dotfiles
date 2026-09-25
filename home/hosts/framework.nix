@@ -11,10 +11,10 @@ in
     ../common.nix
     ../programs/dms-openvpn3.nix
     ../programs/msp-wine.nix
+    ../programs/slack.nix
   ];
 
   home.packages = with pkgs; [
-    slack
     powershell
     sops
     pulumi-bin
