@@ -10,6 +10,7 @@
     ./programs/neovim.nix
     ./programs/shell.nix
     ./programs/ssh.nix
+    ./programs/vesktop.nix
     ./programs/mimeapps.nix
   ];
 
@@ -17,7 +18,6 @@
   home.homeDirectory = "/home/${username}";
 
   home.packages = with pkgs; [
-    pkgs-unstable.vesktop
     wlogout
     pavucontrol
     kdePackages.dolphin

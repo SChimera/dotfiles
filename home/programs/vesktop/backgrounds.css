@@ -1,0 +1,79 @@
+/* Use DMS surface colors even when a Discord gradient theme is selected. */
+:root, .theme-dark, .theme-light, .custom-theme-background {
+    --custom-theme-background: none !important;
+    --bg-overlay-app-frame: linear-gradient(var(--background-tertiary), var(--background-tertiary)) !important;
+    --bg-overlay-chat: linear-gradient(var(--background-primary), var(--background-primary)) !important;
+    --bg-overlay-home: linear-gradient(var(--background-primary), var(--background-primary)) !important;
+    --bg-overlay-selected: linear-gradient(var(--background-modifier-selected), var(--background-modifier-selected)) !important;
+    --bg-overlay-hover: linear-gradient(var(--background-modifier-hover), var(--background-modifier-hover)) !important;
+    --bg-overlay-active: linear-gradient(var(--background-modifier-active), var(--background-modifier-active)) !important;
+    --bg-overlay-0: linear-gradient(var(--background-primary), var(--background-primary)) !important;
+    --bg-overlay-1: linear-gradient(var(--background-secondary), var(--background-secondary)) !important;
+    --bg-overlay-2: linear-gradient(var(--background-secondary), var(--background-secondary)) !important;
+    --bg-overlay-3: linear-gradient(var(--background-tertiary), var(--background-tertiary)) !important;
+    --bg-overlay-4: linear-gradient(var(--background-surface-high), var(--background-surface-high)) !important;
+    --bg-overlay-5: linear-gradient(var(--background-surface-higher), var(--background-surface-higher)) !important;
+    --bg-overlay-6: linear-gradient(var(--background-surface-highest), var(--background-surface-highest)) !important;
+}
+
+/* Gradients are images and otherwise sit on top of the surface color. */
+[class*="bg__"],
+[class*="sidebarList_"],
+[class*="privateChannels_"],
+[class*="panels_"] {
+    background-image: none !important;
+}
+
+[class*="bg__"] {
+    background-color: var(--background-primary) !important;
+}
+
+[class*="sidebarList_"],
+[class*="privateChannels_"] {
+    background-color: var(--background-secondary) !important;
+}
+
+[class*="panels_"] {
+    background-color: var(--background-tertiary) !important;
+}
+
+/* Paint the actual content surfaces; Discord can give these their own
+   backgrounds instead of inheriting the app's background. */
+.visual-refresh #app-mount [class*="chat_"],
+.visual-refresh #app-mount [class*="chatContent_"],
+.visual-refresh #app-mount [class*="messagesWrapper_"],
+.visual-refresh #app-mount [class*="scrollerInner_"],
+.visual-refresh #app-mount [class*="themedBackground_"],
+.visual-refresh #app-mount [class*="channelTextArea_"],
+.visual-refresh #app-mount [class*="container_"][class*="themed_"],
+.visual-refresh #app-mount [class*="peopleColumn_"],
+.visual-refresh #app-mount [class*="nowPlayingColumn_"] {
+    background: var(--background-primary) !important;
+}
+
+.visual-refresh #app-mount [class*="sidebarList_"],
+.visual-refresh #app-mount [class*="privateChannels_"],
+.visual-refresh #app-mount [class*="membersWrap_"],
+.visual-refresh #app-mount [class*="members_"] {
+    background: var(--background-secondary) !important;
+}
+
+.visual-refresh #app-mount [class*="panels_"] {
+    background: var(--background-tertiary) !important;
+}
+
+/* The scroll containers add their own Nitro overlay above the sidebar. */
+.visual-refresh #app-mount [class*="sidebarList_"] [class*="scroller_"],
+.visual-refresh #app-mount [class*="sidebarList_"] > [class*="container_"] {
+    background: var(--background-secondary) !important;
+}
+
+.visual-refresh #app-mount [class*="guilds_"] [class*="scroller_"],
+.visual-refresh #app-mount [class*="guilds_"] {
+    background: var(--background-tertiary) !important;
+}
+
+/* The channel search box also carries a separate dark overlay. */
+.visual-refresh #app-mount [class*="searchBar_"] {
+    background: var(--input-background) !important;
+}
