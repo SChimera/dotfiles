@@ -1,4 +1,4 @@
-{ inputs, pkgs, ... }:
+{ config, inputs, pkgs, pkgs-ai-tools, ... }:
 {
   imports = [
     inputs.dms.homeModules.dank-material-shell
@@ -42,4 +42,24 @@
   # activation. "niri-config-dms" is the xdg.configFile attr name the DMS
   # module uses for its niri/config.kdl include shim.
   xdg.configFile."niri-config-dms".force = true;
+
+  # DMS merges user templates into each wallpaper/theme regeneration. Publish
+  # the resulting theme through T3's CLI so running clients update as well.
+  xdg.configFile."matugen/config.toml".text = ''
+    [config]
+
+    [templates.t3-code]
+    input_path = '${config.xdg.configHome}/matugen/templates/t3-code.json'
+    output_path = '${config.xdg.cacheHome}/matugen/t3-code.json'
+    post_hook = '${pkgs-ai-tools.t3code}/bin/t3 theme set --id matugen ${config.xdg.cacheHome}/matugen/t3-code.json'
+  '';
+
+  xdg.configFile."matugen/templates/t3-code.json".text = ''
+    {
+      "name": "Matugen",
+      "appearance": "{{mode}}",
+      "canvas": "{{colors.surface.default.hex}}",
+      "accent": "{{colors.primary.default.hex}}"
+    }
+  '';
 }
