@@ -43,10 +43,19 @@
   # module uses for its niri/config.kdl include shim.
   xdg.configFile."niri-config-dms".force = true;
 
+  # DMS reads user templates when generating a theme, but does not watch them.
+  # Regenerate on activation when their configuration or contents change.
+  systemd.user.services.dms.Unit.X-Restart-Triggers = [
+    "${config.xdg.configFile."matugen/config.toml".source}"
+    "${config.xdg.configFile."matugen/templates/t3-code.json".source}"
+  ];
+
   # DMS merges user templates into each wallpaper/theme regeneration. Publish
   # the resulting theme through T3's CLI so running clients update as well.
   xdg.configFile."matugen/config.toml".text = ''
     [config]
+
+    [templates]
 
     [templates.t3-code]
     input_path = '${config.xdg.configHome}/matugen/templates/t3-code.json'
