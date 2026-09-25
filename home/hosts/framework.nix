@@ -24,7 +24,15 @@ in
     jetbrains.rider
     dotnet-sdk_10
     dbeaver-bin
-    tiny-rdm
+    # TinyRDM's native Wayland backend renders a broken layout under niri.
+    (symlinkJoin {
+      name = "tiny-rdm-x11";
+      paths = [ tiny-rdm ];
+      nativeBuildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/tiny-rdm --set GDK_BACKEND x11
+      '';
+    })
     charles
   ];
 
