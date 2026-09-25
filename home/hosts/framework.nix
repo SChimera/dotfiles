@@ -19,6 +19,7 @@ in
     pulumi-bin
     terraform
     argocd
+    freelens-bin
     jetbrains.rider
     dotnet-sdk_10
     dbeaver-bin
