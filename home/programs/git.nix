@@ -27,6 +27,7 @@ in
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
+      credential."https://github.com".helper = "!${pkgs.gh}/bin/gh auth git-credential";
       rebase.autosquash = true;
       rebase.autoStash = true;
       help.autocorrect = 1;
