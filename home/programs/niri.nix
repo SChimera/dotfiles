@@ -2,6 +2,16 @@
 {
   imports = [
     {
+      options.local.niri.keyboardLayout = lib.mkOption {
+        type = lib.types.str;
+        default = "us";
+        description = "Comma-separated XKB keyboard layouts, with the default first.";
+      };
+      options.local.niri.extraBinds = lib.mkOption {
+        type = lib.types.lines;
+        default = "";
+        description = "Additional niri keybindings supplied by host modules.";
+      };
       options.local.niri.extraConfig = lib.mkOption {
         type = lib.types.lines;
         default = "";
@@ -35,7 +45,7 @@
       input {
         keyboard {
           xkb {
-            layout "us"
+            layout ${builtins.toJSON config.local.niri.keyboardLayout}
             // options "caps:escape"
           }
         }
@@ -100,6 +110,7 @@
 
       // Keybindings — Mod = Super key
       binds {
+        ${config.local.niri.extraBinds}
         Mod+Return { spawn "alacritty"; }
         Mod+D { spawn "dms" "ipc" "call" "launcher" "toggle"; }
         Mod+Space { spawn "dms" "ipc" "call" "spotlight" "toggle"; }

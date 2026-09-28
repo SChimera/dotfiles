@@ -14,6 +14,11 @@ in
     ../programs/slack.nix
   ];
 
+  local.niri.keyboardLayout = "us,dk";
+  local.niri.extraBinds = ''
+    Mod+Alt+Space { switch-layout "next"; }
+  '';
+
   home.packages = with pkgs; [
     powershell
     sops
