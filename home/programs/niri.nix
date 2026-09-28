@@ -45,6 +45,12 @@
         }
       }
 
+      gestures {
+        hot-corners {
+          off
+        }
+      }
+
       // Outputs — run `niri msg outputs` to see your display names
       // output "eDP-1" {
       //   scale 1.0
