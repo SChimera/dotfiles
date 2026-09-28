@@ -41,7 +41,9 @@
     spotify
     proton-vpn
     pkgs-ai-tools.claude-code
-    inputs.codex-nix.packages.${pkgs.stdenv.hostPlatform.system}.default
+    (pkgs.callPackage ../pkgs/codex {
+      codex = inputs.codex-nix.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    })
     pkgs-ai-tools.t3code
 
     # CLI staples
