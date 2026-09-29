@@ -63,7 +63,21 @@
 
     # Wayland / niri quality-of-life
     cliphist
-    pkgs-unstable.xwayland-satellite
+    # 0.8.3 fixes Steam menus dismissing immediately. Remove this override
+    # once our nixpkgs-unstable pin includes that release.
+    (pkgs-unstable.xwayland-satellite.overrideAttrs (finalAttrs: _: {
+      version = "0.8.3";
+      src = pkgs-unstable.fetchFromGitHub {
+        owner = "Supreeeme";
+        repo = "xwayland-satellite";
+        tag = "v0.8.3";
+        hash = "sha256-eFEjCCniMCKeWU0PcZNv+tDYe08SLFPjRplyPY8OFt4=";
+      };
+      cargoDeps = pkgs-unstable.rustPlatform.fetchCargoVendor {
+        inherit (finalAttrs) src;
+        hash = "sha256-gMGFvnbxM3hD5fmkSimaFd87GEf6BXFe/MGjoS6VNVU=";
+      };
+    }))
     satty
     wf-recorder
     wev
