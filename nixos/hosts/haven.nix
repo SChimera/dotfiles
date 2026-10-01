@@ -11,8 +11,18 @@
 
   services.lianli = {
     enable = true;
-    # Preserve the upstream package/cache instead of rebuilding against our nixpkgs.
-    package = inputs.lian-li-linux.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    # Keep the package's own nixpkgs pin. Backport the ENE speed conversion
+    # fixed upstream after v0.8.0: the controller expects 0-100, not 0-255.
+    # Without this, a 33% fan curve commands about 84% at the controller.
+    package = inputs.lian-li-linux.packages.${pkgs.stdenv.hostPlatform.system}.default.overrideAttrs (old: {
+      postPatch = (old.postPatch or "") + ''
+        substituteInPlace crates/lianli-devices/src/ene6k77/controller.rs \
+          --replace-fail '[REPORT_ID, 0x20 | group, 0x00, duty]' \
+            '[REPORT_ID, 0x20 | group, 0x00, lianli_shared::fan::duty_to_percent(duty)]' \
+          --replace-fail '[REPORT_ID, 0x20 | (group as u8), 0x00, duty]' \
+            '[REPORT_ID, 0x20 | (group as u8), 0x00, lianli_shared::fan::duty_to_percent(duty)]'
+      '';
+    });
   };
 
   # NVIDIA GPU (required for Wayland/niri)
