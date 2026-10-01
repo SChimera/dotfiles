@@ -2,7 +2,6 @@
 {
   imports = [
     ../common.nix
-    ../programs/personal.nix
     ../programs/gaming.nix
     ../programs/speech.nix
     ../programs/zed.nix

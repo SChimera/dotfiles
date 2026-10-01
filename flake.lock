@@ -1,26 +1,5 @@
 {
   "nodes": {
-    "codex-nix": {
-      "inputs": {
-        "flake-utils": "flake-utils",
-        "nixpkgs": [
-          "nixpkgs-ai-tools"
-        ]
-      },
-      "locked": {
-        "lastModified": 1790729097,
-        "narHash": "sha256-Zkj6kI64e9P9Cu9rqL4+3hT5jsAQizshbqviik23+Gs=",
-        "owner": "sadjow",
-        "repo": "codex-nix",
-        "rev": "0cce411a817357ae6d875fd6cc76f8f155e9b12b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "sadjow",
-        "repo": "codex-nix",
-        "type": "github"
-      }
-    },
     "crane": {
       "locked": {
         "lastModified": 1781825982,
@@ -220,24 +199,6 @@
         "type": "github"
       }
     },
-    "flake-utils": {
-      "inputs": {
-        "systems": "systems"
-      },
-      "locked": {
-        "lastModified": 1731533236,
-        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "gitignore": {
       "inputs": {
         "nixpkgs": [
@@ -419,11 +380,11 @@
     },
     "nixpkgs-ai-tools": {
       "locked": {
-        "lastModified": 1790767774,
-        "narHash": "sha256-V4Cg6dL8Lg4jnxUTe5uWPAMq4uIvbAYFXoCX9RUspH0=",
+        "lastModified": 1790876297,
+        "narHash": "sha256-vwyFZQm3jzFwjwoV7gzMQavfnaIBOjfaCavWLDEEYgI=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "88a8397ec24d3dee004e7dfb17f69adbd84d4868",
+        "rev": "b668680e73de6816099d428bf3d34b5d3434353a",
         "type": "github"
       },
       "original": {
@@ -501,7 +462,7 @@
       "inputs": {
         "flake-parts": "flake-parts",
         "nixpkgs": "nixpkgs_3",
-        "systems": "systems_2"
+        "systems": "systems"
       },
       "locked": {
         "lastModified": 1789959143,
@@ -543,7 +504,6 @@
     },
     "root": {
       "inputs": {
-        "codex-nix": "codex-nix",
         "dank-greeter": "dank-greeter",
         "danksearch": "danksearch",
         "disko": "disko",
@@ -582,21 +542,6 @@
       }
     },
     "systems": {
-      "locked": {
-        "lastModified": 1681028828,
-        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "repo": "default",
-        "type": "github"
-      }
-    },
-    "systems_2": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
