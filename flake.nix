@@ -18,6 +18,11 @@
     # channel promotion lags days behind.
     nixpkgs-ai-tools.url = "github:NixOS/nixpkgs/master";
 
+    herdr = {
+      url = "github:herdrdev/herdr/v0.9.3";
+      inputs.nixpkgs.follows = "nixpkgs-ai-tools";
+    };
+
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";

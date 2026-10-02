@@ -43,6 +43,7 @@
     pkgs-ai-tools.claude-code
     pkgs-ai-tools.codex
     pkgs-ai-tools.t3code
+    inputs.herdr.packages.${pkgs.stdenv.hostPlatform.system}.default
 
     # CLI staples
     ripgrep
