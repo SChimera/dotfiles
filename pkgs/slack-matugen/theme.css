@@ -50,7 +50,8 @@
   --dt_color-theme-content-inv-sec: {{colors.on_surface_variant.default.hex}} !important;
   --dt_color-theme-content-inv-ter: {{colors.on_surface_variant.default.hex}} !important;
   --dt_color-theme-content-hgl-1: {{colors.tertiary.default.hex}} !important;
-  --dt_color-theme-content-imp: {{colors.error.default.hex}} !important;
+  /* Mentions banners and badges draw this text on theme-base-imp (error). */
+  --dt_color-theme-content-imp: {{colors.on_error.default.hex}} !important;
   --dt_color-theme-content-inv-imp: {{colors.error.default.hex}} !important;
   --dt_color-theme-otl-inv-pry: {{colors.outline_variant.default.hex}} !important;
   --p-team_sidebar__nav-bg: {{colors.surface_container_low.default.hex}} !important;

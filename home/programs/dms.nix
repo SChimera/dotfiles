@@ -1,9 +1,37 @@
-{ config, inputs, pkgs, pkgs-ai-tools, ... }:
+{ config, inputs, lib, pkgs, pkgs-ai-tools, ... }:
 {
   imports = [
     inputs.dms.homeModules.dank-material-shell
     inputs.dms.homeModules.niri
   ];
+
+  # DMS uses this command to apply its KDE palettes and notify running Qt apps.
+  # Expose just the helper, without Plasma's desktop entries and session files.
+  home.packages = [ (pkgs.runCommand "dms-kde-color-helper" { } ''
+    mkdir -p "$out/bin"
+    ln -s ${pkgs.kdePackages.plasma-workspace}/bin/plasma-apply-colorscheme "$out/bin/"
+  '') ];
+
+  # Opt in to DMS's KDE palette on first activation. Keep kdeglobals writable:
+  # plasma-apply-colorscheme copies the full palette here on appearance changes.
+  home.activation.seedDmsKdePalette = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ ! -e ${lib.escapeShellArg "${config.xdg.configHome}/kdeglobals"} ]; then
+      run ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
+        --file kdeglobals --group General --key ColorScheme DankMatugen
+      if [ -f ${lib.escapeShellArg "${config.xdg.dataHome}/color-schemes/DankMatugen.colors"} ]; then
+        run ${pkgs.coreutils}/bin/cp \
+          ${lib.escapeShellArg "${config.xdg.dataHome}/color-schemes/DankMatugen.colors"} \
+          ${lib.escapeShellArg "${config.xdg.configHome}/kdeglobals"}
+      fi
+    fi
+    # A per-app DMS selection prevents Dolphin from following global updates.
+    case "$(${pkgs.kdePackages.kconfig}/bin/kreadconfig6 --file dolphinrc --group UiSettings --key ColorScheme)" in
+      DankMatugen*)
+        run ${pkgs.kdePackages.kconfig}/bin/kwriteconfig6 \
+          --file dolphinrc --group UiSettings --key ColorScheme --delete
+        ;;
+    esac
+  '';
 
   programs.dank-material-shell = {
     enable = true;
