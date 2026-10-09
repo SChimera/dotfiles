@@ -8,5 +8,10 @@
     ../programs/proton-drive.nix
   ];
 
+  local.niri.keyboardLayout = "us,dk";
+  local.niri.extraBinds = ''
+    Mod+Alt+Space { switch-layout "next"; }
+  '';
+
   home.packages = [ pkgs.dotnet-sdk ];
 }
