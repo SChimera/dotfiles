@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, pkgs-unstable, ... }:
 let
   initialDmsSettings = pkgs.writeText "framework-dms-settings.json" (builtins.toJSON {
     lockBeforeSuspend = true;
@@ -25,7 +25,7 @@ in
     pulumi-bin
     terraform
     argocd
-    freelens-bin
+    pkgs-unstable.freelens-bin
     jetbrains.rider
     dotnet-sdk_10
     dbeaver-bin

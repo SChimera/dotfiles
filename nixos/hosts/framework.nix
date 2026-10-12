@@ -1,5 +1,5 @@
 # Framework Laptop 13 Pro, Intel Core Ultra X7 358H, 32 GB RAM.
-{ inputs, username, ... }:
+{ inputs, pkgs, username, ... }:
 {
   imports = [
     inputs.nixos-hardware.nixosModules.framework-intel-core-ultra-series3
@@ -9,6 +9,9 @@
   ];
 
   networking.hostName = "framework";
+  # Framework recommends kernel 7.0+ for Intel Core Ultra Series 3.
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   services.power-profiles-daemon.enable = true;
   # DMS reads battery charge and charging state through UPower.
   services.upower.enable = true;
