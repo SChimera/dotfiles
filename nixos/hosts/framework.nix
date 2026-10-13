@@ -16,6 +16,8 @@
   # DMS reads battery charge and charging state through UPower.
   services.upower.enable = true;
 
+  services.printing.enable = true;
+
   # OpenVPN 3 needs its D-Bus services as well as the command-line client.
   # Let NetworkManager and OpenVPN share resolved for VPN-provided DNS.
   programs.openvpn3.enable = true;
