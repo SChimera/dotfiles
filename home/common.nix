@@ -37,7 +37,8 @@
 
     # User-scope GUI apps
     ungoogled-chromium
-    vscode
+    # Stable's VS Code package still uses the old bundled ripgrep path.
+    pkgs-ai-tools.vscode
     spotify
     proton-vpn
     pkgs-ai-tools.claude-code
