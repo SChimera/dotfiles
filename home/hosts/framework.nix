@@ -1,4 +1,4 @@
-{ config, lib, pkgs, pkgs-unstable, ... }:
+{ config, inputs, lib, pkgs, pkgs-unstable, ... }:
 let
   initialDmsSettings = pkgs.writeText "framework-dms-settings.json" (builtins.toJSON {
     lockBeforeSuspend = true;
@@ -9,7 +9,6 @@ in
 {
   imports = [
     ../common.nix
-    ../programs/dms-openvpn3.nix
     ../programs/msp-wine.nix
     ../programs/slack.nix
   ];
@@ -43,12 +42,10 @@ in
 
   home.sessionVariables.DOTNET_ROOT = "${pkgs.dotnet-sdk_10}/share/dotnet";
 
-  # Refresh the domain file with devops-openvpn/scripts/export-dns-domains.py.
-  xdg.configFile."dms-openvpn3/dns.json".text = builtins.toJSON {
-    profiles.framework = {
-      enabled = true;
-      file = "${config.xdg.configHome}/dms-openvpn3/application-domains.json";
-    };
+  # Install the integration; DMS Settings owns its toggle and bar placement.
+  programs.dank-material-shell.plugins.dankscale = {
+    enable = true;
+    src = inputs.dms-dankscale;
   };
 
   # Seed first-login defaults without making DMS's settings file read-only.

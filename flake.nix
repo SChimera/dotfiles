@@ -42,8 +42,8 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
-    dms-openvpn3 = {
-      url = "github:jetersen/dms-openvpn3";
+    dms-dankscale = {
+      url = "github:dwright134/dms-dankscale";
       flake = false;
     };
 

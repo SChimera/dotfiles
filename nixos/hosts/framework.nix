@@ -18,25 +18,20 @@
 
   services.printing.enable = true;
 
+  services.tailscale = {
+    enable = true;
+    openFirewall = true;
+    # Allow using exit nodes and subnet routes selected in Dankscale.
+    useRoutingFeatures = "client";
+    # Let the desktop plugin manage Tailscale without root prompts.
+    extraSetFlags = [ "--operator=${username}" ];
+  };
+
   # OpenVPN 3 needs its D-Bus services as well as the command-line client.
   # Let NetworkManager and OpenVPN share resolved for VPN-provided DNS.
   programs.openvpn3.enable = true;
   services.resolved.enable = true;
   networking.networkmanager.dns = "systemd-resolved";
-
-  # Allow the active local user to apply DMS VPN DNS routing on tun0.
-  # This covers all processes of that user, not only the plugin.
-  security.polkit.extraConfig = ''
-    polkit.addRule(function(action, subject) {
-      if (subject.user === ${builtins.toJSON username} &&
-          subject.local && subject.active &&
-          action.lookup("interface") === "tun0" &&
-          (action.id === "org.freedesktop.resolve1.set-domains" ||
-           action.id === "org.freedesktop.resolve1.set-default-route")) {
-        return polkit.Result.YES;
-      }
-    });
-  '';
 
   # Suspend only. The disk layout has no persistent swap for hibernation.
   systemd.sleep.settings.Sleep = {

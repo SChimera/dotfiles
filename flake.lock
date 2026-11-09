@@ -130,19 +130,19 @@
         "type": "github"
       }
     },
-    "dms-openvpn3": {
+    "dms-dankscale": {
       "flake": false,
       "locked": {
-        "lastModified": 1793368586,
-        "narHash": "sha256-b4acTam+jf3SnSVbJA/cJVKXb9bVAKy4nuATVIvYlfY=",
-        "owner": "jetersen",
-        "repo": "dms-openvpn3",
-        "rev": "b54cab26e7aa3ce427c3b63c20a95e07a3d867a6",
+        "lastModified": 1793810291,
+        "narHash": "sha256-YyFdgds1XBBVo4RYJTpK6z/U35vyEV01vYFoyTNM98M=",
+        "owner": "dwright134",
+        "repo": "dms-dankscale",
+        "rev": "fb21277e45a2c77eeb53de48a2008f07ea6892aa",
         "type": "github"
       },
       "original": {
-        "owner": "jetersen",
-        "repo": "dms-openvpn3",
+        "owner": "dwright134",
+        "repo": "dms-dankscale",
         "type": "github"
       }
     },
@@ -530,7 +530,7 @@
         "danksearch": "danksearch",
         "disko": "disko",
         "dms": "dms",
-        "dms-openvpn3": "dms-openvpn3",
+        "dms-dankscale": "dms-dankscale",
         "herdr": "herdr",
         "home-manager": "home-manager",
         "lanzaboote": "lanzaboote",

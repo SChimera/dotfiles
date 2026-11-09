@@ -176,14 +176,16 @@ Codex CLI, Vesktop, Spotify, and Proton VPN are installed through shared Home
 Manager configuration; Slack is specific to Framework. Sign into each app on the laptop. Import the employer's
 VPN profile into OpenVPN 3 separately; credentials are not part of this flake.
 
-Framework also installs [jetersen's DMS OpenVPN 3 plugin](https://github.com/jetersen/dms-openvpn3)
-with its Python D-Bus dependency. In DMS Settings, open Plugins, enable
-**DMS Integration for OpenVPN 3**, then add its widget to DankBar. If it is not
-listed after a rebuild, run `dms ipc call plugin-scan scan`. DMS keeps the toggle
-and bar placement editable. The plugin can import profiles and connect or
-disconnect sessions; interactive credentials, OTP, and browser authentication
-still require `openvpn3 session-auth`, following the widget's instructions.
-Update the pinned plugin with `nix flake update dms-openvpn3` and rebuild.
+Framework also enables Tailscale and installs the
+[Dankscale DMS plugin](https://github.com/dwright134/dms-dankscale).
+After rebuilding, run `sudo tailscale up --operator="$USER"` and follow the
+sign-in URL once. The configured user is set as Tailscale's operator on boot,
+so the plugin can connect, disconnect, and change settings without sudo.
+In DMS Settings → Plugins, enable **Dankscale**, then add it to DankBar.
+If it is not listed, run `dms ipc call plugin-scan scan`.
+Exit nodes and subnet routes can be selected in the plugin; Framework is
+configured as a routing client. Update the pinned integration with
+`nix flake update dms-dankscale` and rebuild.
 
 Check Wi-Fi, audio, display scaling, and suspend/resume on the actual laptop.
 Framework seeds DMS with lock-before-suspend enabled and a five-minute idle-lock
