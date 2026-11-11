@@ -229,16 +229,16 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1790708764,
-        "narHash": "sha256-uu452Xe23pSvFk7w7fKPjiaqY5QenUIljao2SFAxpc0=",
+        "lastModified": 1791993401,
+        "narHash": "sha256-N7e7oCKxeCoxek6UT8Lweq16rSsQQi34QMb7C2iNpm8=",
         "owner": "herdrdev",
         "repo": "herdr",
-        "rev": "7b116c05bfda646af39d2524c54e70c751f57ee8",
+        "rev": "2ecf19a92fc3a7fff75b6ce3655ef04f4625ec01",
         "type": "github"
       },
       "original": {
         "owner": "herdrdev",
-        "ref": "v0.9.3",
+        "ref": "v0.9.5",
         "repo": "herdr",
         "type": "github"
       }
@@ -402,11 +402,11 @@
     },
     "nixpkgs-ai-tools": {
       "locked": {
-        "lastModified": 1794209854,
-        "narHash": "sha256-6f5+qz0JTtH52uOCj9fth9cbDyJMnpytP83/DKOGfSU=",
+        "lastModified": 1794298553,
+        "narHash": "sha256-ZbH7ruvtl2VDoWum+yl3La9uHQPgkJHPtFX522fWEgM=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "6c923b2bab76296cc127cb8cac8a7f635b552097",
+        "rev": "c31d1ef9ee40c3309858ba9b8b01298447612599",
         "type": "github"
       },
       "original": {

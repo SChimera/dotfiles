@@ -19,7 +19,7 @@
     nixpkgs-ai-tools.url = "github:NixOS/nixpkgs/master";
 
     herdr = {
-      url = "github:herdrdev/herdr/v0.9.3";
+      url = "github:herdrdev/herdr/v0.9.5";
       inputs.nixpkgs.follows = "nixpkgs-ai-tools";
     };
 
